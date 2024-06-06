@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MainApp());
+Future<void> main() async {
+  runApp(
+    const ProviderScope(
+      child: Serti0xBlogEditor(),
+    ),
+  );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class Serti0xBlogEditor extends StatelessWidget {
+  const Serti0xBlogEditor({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Hello World!'),
+          child: Text(
+            "Serti0x Blog Editor",
+          ),
         ),
       ),
     );
