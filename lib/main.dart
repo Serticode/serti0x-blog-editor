@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:serti0x_blog_editor/screens/landing_page/landing_page.dart';
+import 'package:routemaster/routemaster.dart';
+import 'package:serti0x_blog_editor/models/data_or_error_model.dart';
+import 'package:serti0x_blog_editor/repository/auth_repository/auth_repository.dart';
+import 'package:serti0x_blog_editor/router/router.dart';
 import 'package:serti0x_blog_editor/shared/app_strings.dart';
 import 'package:serti0x_blog_editor/theme/theme_state_and_provider.dart';
 import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
 
 Future<void> main() async {
+  await dotenv.load();
+
   runApp(
     const ProviderScope(
       child: Serti0xBlogEditor(),
@@ -14,11 +20,32 @@ Future<void> main() async {
   );
 }
 
-class Serti0xBlogEditor extends ConsumerWidget {
+class Serti0xBlogEditor extends ConsumerStatefulWidget {
   const Serti0xBlogEditor({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Serti0xBlogEditor> createState() => _Serti0xBlogEditorState();
+}
+
+class _Serti0xBlogEditorState extends ConsumerState<Serti0xBlogEditor> {
+  DataOrErrorModel? dataOrErrorModel;
+
+  void getUserData() async {
+    dataOrErrorModel = await ref.read(authRepositoryProvider).getUserData();
+
+    if (dataOrErrorModel != null && dataOrErrorModel!.data != null) {
+      ref.read(userProvider.notifier).update((state) => dataOrErrorModel!.data);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final appTheme = ref.watch(themeNotifierProvider);
 
     return ScreenUtilInit(
@@ -37,11 +64,19 @@ class Serti0xBlogEditor extends ConsumerWidget {
                 color: Colors.purple,
               );
             } else {
-              return MaterialApp(
+              return MaterialApp.router(
                 title: AppStrings.instance.appName,
                 debugShowCheckedModeBanner: false,
                 theme: appTheme,
-                home: const LandingPage(),
+                routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
+                  final user = ref.watch(userProvider);
+
+                  if (user != null && user.token.isNotEmpty) {
+                    return loggedInRoute;
+                  }
+                  return loggedOutRoute;
+                }),
+                routeInformationParser: const RoutemasterParser(),
               );
             }
           },

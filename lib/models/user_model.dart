@@ -1,56 +1,52 @@
-import 'dart:convert';
+import "dart:collection";
 
-class UserModel {
+class UserModel extends MapView<String, dynamic> {
   UserModel({
     required this.email,
     required this.name,
     required this.profilePic,
-    required this.uid,
+    required this.userID,
     required this.token,
-  });
+  }) : super({
+          "userID": userID,
+          "email": email,
+          "name": name,
+          "profilePic": profilePic,
+          "token": token,
+        });
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromJSON({
+    required Map<String, dynamic> json,
+  }) {
+    final Map<String, dynamic> userDOC = json["user"];
+
     return UserModel(
-      email: map['email'] ?? '',
-      name: map['name'] ?? '',
-      profilePic: map['profilePic'] ?? '',
-      uid: map['_id'] ?? '',
-      token: map['token'] ?? '',
+      email: userDOC["email"] ?? "",
+      name: userDOC["name"] ?? "",
+      profilePic: userDOC["profilePic"] ?? "",
+      userID: userDOC["id"] ?? "",
+      token: json["token"] ?? "",
     );
   }
 
-  factory UserModel.fromJson(String source) =>
-      UserModel.fromMap(json.decode(source));
   final String email;
   final String name;
   final String profilePic;
-  final String uid;
+  final String userID;
   final String token;
-
-  Map<String, dynamic> toMap() {
-    return {
-      'email': email,
-      'name': name,
-      'profilePic': profilePic,
-      'uid': uid,
-      'token': token,
-    };
-  }
-
-  String toJson() => json.encode(toMap());
 
   UserModel copyWith({
     String? email,
     String? name,
     String? profilePic,
-    String? uid,
+    String? userID,
     String? token,
   }) {
     return UserModel(
       email: email ?? this.email,
       name: name ?? this.name,
       profilePic: profilePic ?? this.profilePic,
-      uid: uid ?? this.uid,
+      userID: userID ?? this.userID,
       token: token ?? this.token,
     );
   }

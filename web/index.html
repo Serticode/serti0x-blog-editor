@@ -33,9 +33,34 @@
     <link rel="icon" type="image/png" href="favicon.png" />
 
     <title>serti0x_blog_editor</title>
+    <script src="https://apis.google.com/js/api.js"></script>
     <link rel="manifest" href="manifest.json" />
   </head>
   <body>
     <script src="flutter_bootstrap.js" async></script>
+    <script>
+      function initClient() {
+        gapi.load("client:auth2", function () {
+          gapi.client
+            .init({
+              clientId:
+                "781380557455-0r62kia1b2q0adaulb7631m3ecj6vc4r.apps.googleusercontent.com",
+              scope: "profile email",
+            })
+            .then(function () {
+              // Client initialized and ready to use
+              console.log("THEN FUNCTION gapi.client:", error);
+            })
+            .catch(function (error) {
+              console.log("Error initializing gapi.client:", error);
+            });
+        });
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://apis.google.com/js/platform.js?onload=initClient"></script>
+    <script src="main.dart.js" type="application/javascript"></script>
   </body>
 </html>

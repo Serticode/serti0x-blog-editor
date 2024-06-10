@@ -1,16 +1,20 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
-import 'package:serti0x_blog_editor/models/user_model.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:serti0x_blog_editor/repository/preferences_repository/shared_preferences_repository.dart';
-import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
+import "dart:convert";
+import "package:flutter_dotenv/flutter_dotenv.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:http/http.dart";
+import "package:serti0x_blog_editor/models/data_or_error_model.dart";
+import "package:serti0x_blog_editor/models/user_model.dart";
+import "package:serti0x_blog_editor/repository/preferences_repository/shared_preferences_repository.dart";
+import "package:serti0x_blog_editor/shared/env_constants.dart";
+import "package:serti0x_blog_editor/shared/network_constants.dart";
+import "package:serti0x_blog_editor/utilities/app_extensions.dart";
 
 //!
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
-    googleSignIn: GoogleSignIn(),
     client: Client(),
     localStorageRepository: SharedPrefRepository(),
+    networkConstants: NetworkConstants.instance,
   ),
 );
 
@@ -18,32 +22,107 @@ final userProvider = StateProvider<UserModel?>((ref) => null);
 
 class AuthRepository {
   AuthRepository({
-    required GoogleSignIn googleSignIn,
     required Client client,
     required SharedPrefRepository localStorageRepository,
-  })  : _googleSignIn = googleSignIn,
-        _client = client,
-        _localStorageRepository = localStorageRepository;
-  final GoogleSignIn _googleSignIn;
+    required NetworkConstants networkConstants,
+  })  : _client = client,
+        _sharedPrefRepo = localStorageRepository,
+        _networkConstants = networkConstants;
   final Client _client;
-  final SharedPrefRepository _localStorageRepository;
+  final SharedPrefRepository _sharedPrefRepo;
+  final NetworkConstants _networkConstants;
 
   //! SIGN IN
-  Future<void> signInWithGoogle() async {
+  Future<DataOrErrorModel> signInWithGoogle() async {
+    DataOrErrorModel dataOrError = DataOrErrorModel(
+      error: "Default Error - Sign In With Google Endpoint: We have some error",
+      data: null,
+    );
+
     try {
-      final user = await _googleSignIn.signIn();
+      //!TODO: IMPLEMENT SIGN IN WITH GOOGLE
+      final response = await _client.post(
+        Uri.parse(_networkConstants.login),
+        body: jsonEncode({
+          "email": dotenv.get(ENVConstants.userEmail),
+          "name": dotenv.get(ENVConstants.userDisplayName),
+          "profilePic": dotenv.get(ENVConstants.profilePic),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      );
 
-      if (user != null) {
-        "${user.email} ${user.displayName} ${user.photoUrl}".log();
+      switch (response.statusCode) {
+        case 200:
+          final jsonResponse = jsonDecode(response.body);
+          final user = UserModel.fromJSON(json: jsonResponse);
 
-        /* final userAcc = UserModel(
-          email: user.email,
-          name: user.displayName ?? '',
-          profilePic: user.photoUrl ?? '',
-          uid: '',
-          token: '',
-        ); */
+          dataOrError = DataOrErrorModel(error: null, data: user);
+
+          _sharedPrefRepo.setToken(token: user.token);
+          break;
+        default:
+          final jsonResponse = jsonDecode(response.body);
+          "DEFAULT GOTTEN JSON RESPONSE - LOGIN WITH GOOGLE: $jsonResponse"
+              .log();
       }
-    } catch (e) {}
+    } catch (error) {
+      "LOGIN ERROR: $error";
+      dataOrError = DataOrErrorModel(error: error.toString(), data: null);
+    }
+    return dataOrError;
+  }
+
+  //!
+  //!
+  Future<DataOrErrorModel> getUserData() async {
+    DataOrErrorModel dataOrError = DataOrErrorModel(
+      error: "Default Error - Sign In With Google Endpoint: We have some error",
+      data: null,
+    );
+
+    try {
+      String? token = await _sharedPrefRepo.getToken();
+
+      if (token != null) {
+        var response = await _client.get(
+          Uri.parse(_networkConstants.getUser),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          },
+        );
+
+        switch (response.statusCode) {
+          case 200:
+            final jsonResponse = jsonDecode(response.body);
+            final user = UserModel.fromJSON(json: jsonResponse).copyWith(
+              token: token,
+            );
+
+            dataOrError = DataOrErrorModel(
+              error: null,
+              data: user,
+            );
+
+            _sharedPrefRepo.setToken(token: token);
+            break;
+        }
+      }
+    } catch (error) {
+      "GET USER DATA ERROR: $error";
+
+      dataOrError = DataOrErrorModel(
+        error: error.toString(),
+        data: null,
+      );
+    }
+    return dataOrError;
+  }
+
+  //!
+  void signOut() async {
+    _sharedPrefRepo.setToken(token: "");
   }
 }

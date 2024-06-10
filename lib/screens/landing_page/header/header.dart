@@ -2,7 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:routemaster/routemaster.dart';
+import 'package:serti0x_blog_editor/models/data_or_error_model.dart';
 import 'package:serti0x_blog_editor/repository/auth_repository/auth_repository.dart';
+import 'package:serti0x_blog_editor/router/routes.dart';
 import 'package:serti0x_blog_editor/screens/landing_page/widgets/broken_circle.dart';
 import 'package:serti0x_blog_editor/screens/widgets/app_button.dart';
 import 'package:serti0x_blog_editor/shared/app_colours.dart';
@@ -60,8 +63,28 @@ class Header extends ConsumerWidget {
           buttonText: appStrings.login,
           isLoading: false,
           onTap: () async {
-            "LOGIN BUTTON TAPPED".log();
-            await ref.read(authRepositoryProvider).signInWithGoogle();
+            final navigator = Routemaster.of(context);
+            final scaffoldMessenger = ScaffoldMessenger.of(context);
+            final routeNames = RouteNames.instance;
+
+            await ref
+                .read(authRepositoryProvider)
+                .signInWithGoogle()
+                .then((DataOrErrorModel dataOrErrorModel) {
+              if (dataOrErrorModel.data != null) {
+                ref
+                    .read(userProvider.notifier)
+                    .update((state) => dataOrErrorModel.data);
+
+                navigator.replace(routeNames.document);
+              } else {
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(
+                    content: Text(dataOrErrorModel.error!),
+                  ),
+                );
+              }
+            });
           },
         )
       ],
