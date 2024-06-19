@@ -1,6 +1,10 @@
+import "package:flutter/material.dart";
 import "package:intl/intl.dart";
+import "package:serti0x_blog_editor/models/article_model.dart";
+import "package:serti0x_blog_editor/shared/app_colours.dart";
 
 class AppUtils {
+  //!
   static String formatDateTime({
     required DateTime theDate,
   }) {
@@ -30,5 +34,47 @@ class AppUtils {
 
     //! DESIRED STRING
     return "$dayOfWeek / $monthYear $dayOfMonth$suffix / $time";
+  }
+
+  //!
+  //!
+  static Color getArticleCategoryBGColour({
+    required ArticleModel currentArticle,
+  }) {
+    const coloursInstance = AppColours.instance;
+
+    final category = getArticleCategory(categoryName: currentArticle.category!);
+
+    switch (category) {
+      case ArticleCategory.backEnd:
+        return coloursInstance.purple.withOpacity(0.1);
+      case ArticleCategory.frontEnd:
+        return coloursInstance.peach.withOpacity(0.1);
+      case ArticleCategory.gist:
+        return coloursInstance.blue.withOpacity(0.1);
+      default:
+        return coloursInstance.grey900.withOpacity(0.1);
+    }
+  }
+
+  //!
+  //!
+  static Color getArticleCategoryColour({
+    required ArticleModel currentArticle,
+  }) {
+    const coloursInstance = AppColours.instance;
+
+    final category = getArticleCategory(categoryName: currentArticle.category!);
+
+    switch (category) {
+      case ArticleCategory.backEnd:
+        return coloursInstance.purple;
+      case ArticleCategory.frontEnd:
+        return coloursInstance.peach;
+      case ArticleCategory.gist:
+        return coloursInstance.blue;
+      default:
+        return coloursInstance.grey900;
+    }
   }
 }

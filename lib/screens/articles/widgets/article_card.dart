@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:serti0x_blog_editor/models/article_model.dart';
+import 'package:serti0x_blog_editor/services/article_state/article_state.dart';
 import 'package:serti0x_blog_editor/shared/app_colours.dart';
 import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
 import 'package:serti0x_blog_editor/utilities/utils.dart';
@@ -18,6 +19,8 @@ class ArticleCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const coloursInstance = AppColours.instance;
+    final currentArticle = ref.watch(articleInStateProvider);
+    final bool isCurrentArticle = currentArticle == article;
 
     return Container(
       height: 250,
@@ -28,9 +31,15 @@ class ArticleCard extends ConsumerWidget {
         color: coloursInstance.white,
         borderRadius: BorderRadius.circular(12.0),
         border: Border.all(
-          color: coloursInstance.grey300,
+          color: isCurrentArticle
+              ? AppUtils.getArticleCategoryColour(
+                  currentArticle: article,
+                )
+              : coloursInstance.grey300,
         ),
       ),
+
+      //!
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -74,13 +83,9 @@ class ArticleCard extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
-              color: getArticleCategory(categoryName: article.category!) ==
-                      ArticleCategory.backEnd
-                  ? coloursInstance.purple.withOpacity(0.1)
-                  : getArticleCategory(categoryName: article.category!) ==
-                          ArticleCategory.frontEnd
-                      ? coloursInstance.peach.withOpacity(0.1)
-                      : coloursInstance.blue.withOpacity(0.1),
+              color: AppUtils.getArticleCategoryBGColour(
+                currentArticle: article,
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -89,13 +94,9 @@ class ArticleCard extends ConsumerWidget {
                   "bubble".svg,
                   width: 16.0,
                   height: 16.0,
-                  color: getArticleCategory(categoryName: article.category!) ==
-                          ArticleCategory.backEnd
-                      ? coloursInstance.purple
-                      : getArticleCategory(categoryName: article.category!) ==
-                              ArticleCategory.frontEnd
-                          ? coloursInstance.peach
-                          : coloursInstance.blue,
+                  color: AppUtils.getArticleCategoryColour(
+                    currentArticle: article,
+                  ),
                 ),
 
                 //!
@@ -105,13 +106,9 @@ class ArticleCard extends ConsumerWidget {
                 article.category!.txt(
                   context: context,
                   fontSize: 10,
-                  color: getArticleCategory(categoryName: article.category!) ==
-                          ArticleCategory.backEnd
-                      ? coloursInstance.purple
-                      : getArticleCategory(categoryName: article.category!) ==
-                              ArticleCategory.frontEnd
-                          ? coloursInstance.peach
-                          : coloursInstance.blue,
+                  color: AppUtils.getArticleCategoryColour(
+                    currentArticle: article,
+                  ),
                   fontWeight: FontWeight.w600,
                 ),
               ],

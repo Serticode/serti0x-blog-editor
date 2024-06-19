@@ -47,7 +47,8 @@ class ArticleModel extends MapView<String, dynamic> {
 enum ArticleCategory {
   frontEnd(categoryName: "Front End"),
   backEnd(categoryName: "Back End"),
-  gist(categoryName: "Gist");
+  gist(categoryName: "Gist"),
+  none(categoryName: "None");
 
   final String categoryName;
 
@@ -67,6 +68,6 @@ ArticleCategory getArticleCategory({required String categoryName}) {
     case "Gist":
       return ArticleCategory.gist;
     default:
-      return ArticleCategory.gist;
+      return ArticleCategory.none;
   }
 }

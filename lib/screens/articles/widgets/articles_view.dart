@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:serti0x_blog_editor/models/article_model.dart';
 import 'package:serti0x_blog_editor/repository/article_repository/article_repository.dart';
-import 'package:serti0x_blog_editor/screens/documents/widgets/article_card.dart';
+import 'package:serti0x_blog_editor/screens/articles/widgets/article_card.dart';
 import 'package:serti0x_blog_editor/screens/widgets/app_loader.dart';
+import 'package:serti0x_blog_editor/services/article_state/article_state.dart';
 import 'package:serti0x_blog_editor/shared/app_colours.dart';
 import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
 
@@ -64,6 +65,14 @@ class ArticlesView extends ConsumerWidget {
                         itemBuilder: (_, index) {
                           return ArticleCard(
                             article: articles.elementAt(index),
+                          ).onTap(
+                            onTap: () {
+                              ref
+                                  .read(articleInStateProvider.notifier)
+                                  .updateArticleInState(
+                                    theArticle: articles.elementAt(index),
+                                  );
+                            },
                           );
                         },
                       );

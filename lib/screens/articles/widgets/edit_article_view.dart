@@ -5,21 +5,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:serti0x_blog_editor/models/article_model.dart';
-import 'package:serti0x_blog_editor/screens/documents/widgets/article_editor.dart';
+import 'package:serti0x_blog_editor/screens/articles/widgets/article_editor.dart';
 import 'package:serti0x_blog_editor/screens/widgets/app_button.dart';
+import 'package:serti0x_blog_editor/services/article_state/article_state.dart';
 import 'package:serti0x_blog_editor/shared/app_colours.dart';
 import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
+import 'package:serti0x_blog_editor/utilities/utils.dart';
 
 class EditArticleView extends ConsumerWidget {
   const EditArticleView({
-    required this.articleIndex,
     super.key,
   });
-  final int articleIndex;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const coloursInstance = AppColours.instance;
+    final currentArticle = ref.watch(articleInStateProvider);
 
     return Column(
       children: [
@@ -36,11 +37,9 @@ class EditArticleView extends ConsumerWidget {
             border: Border(
               left: BorderSide(
                 color: coloursInstance.grey200,
-                width: 2,
               ),
               bottom: BorderSide(
                 color: coloursInstance.grey200,
-                width: 2,
               ),
             ),
           ),
@@ -54,7 +53,7 @@ class EditArticleView extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  "# WORK ON BUDGET REPORT FOR BLAH BLAH BLAH".txt16(
+                  "# ${currentArticle.title}".txt16(
                     context: context,
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w600,
@@ -89,71 +88,71 @@ class EditArticleView extends ConsumerWidget {
 
               //!
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
-                      color: articleIndex % 3 == 0
-                          ? coloursInstance.purple.withOpacity(0.1)
-                          : articleIndex.isEven
-                              ? coloursInstance.peach.withOpacity(0.1)
-                              : coloursInstance.blue.withOpacity(0.1),
+                      color: AppUtils.getArticleCategoryBGColour(
+                        currentArticle: currentArticle,
+                      ),
                     ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "bubble".svg,
-                          width: 16.0,
-                          height: 16.0,
-                          color: articleIndex % 3 == 0
-                              ? coloursInstance.purple
-                              : articleIndex.isEven
-                                  ? coloursInstance.peach
-                                  : coloursInstance.blue,
-                        ),
 
-                        //!
-                        8.0.sizedBoxWidth,
+                    //!
+                    child: SizedBox(
+                      width: 120.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "bubble".svg,
+                            width: 16.0,
+                            height: 16.0,
+                            color: AppUtils.getArticleCategoryColour(
+                              currentArticle: currentArticle,
+                            ),
+                          ),
 
-                        //!
-                        (articleIndex % 3 == 0
-                                ? ArticleCategory.gist.categoryName
-                                : articleIndex.isEven
-                                    ? ArticleCategory.backEnd.categoryName
-                                    : ArticleCategory.frontEnd.categoryName)
-                            .txt(
-                          context: context,
-                          fontSize: 10,
-                          color: articleIndex % 3 == 0
-                              ? coloursInstance.purple
-                              : articleIndex.isEven
-                                  ? coloursInstance.peach
-                                  : coloursInstance.blue,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
+                          //!
+                          8.0.sizedBoxWidth,
+
+                          //!
+                          getArticleCategory(
+                            categoryName: currentArticle.category!,
+                          ).categoryName.txt(
+                                context: context,
+                                fontSize: 10,
+                                color: AppUtils.getArticleCategoryColour(
+                                  currentArticle: currentArticle,
+                                ),
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ],
+                      ),
                     ),
                   ),
 
                   21.0.sizedBoxWidth,
 
                   //!
-                  "Today, ${TimeOfDay.fromDateTime(DateTime.now()).hour}: ${TimeOfDay.fromDateTime(DateTime.now()).minute}"
+                  AppUtils.formatDateTime(theDate: currentArticle.createdAt!)
                       .txt(
                     context: context,
                     fontSize: 10,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w600,
                   ),
 
                   21.0.sizedBoxWidth,
 
                   //!
-                  "Serticode".txt14(
+                  "@Serticode".txt14(
                     context: context,
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w600,
-                    color: coloursInstance.grey600,
+                    color: AppUtils.getArticleCategoryColour(
+                      currentArticle: currentArticle,
+                    ),
                   ),
                 ],
               )
