@@ -9,8 +9,15 @@ class NetworkConstants {
     return _instance!;
   }
 
+  //! AUTH
   final String login = "http://localhost:5555/api/v1/auth/login";
   final String getUser = "http://localhost:5555/api/v1/auth/getUser/";
-  final String logout = "$host/auth/logout";
-  final String refresh = "$host/auth/logout";
+  final String logout = "http://localhost:5555/api/v1/auth/logout/";
+
+  //! ARTICLES
+  final String createArticle = "http://localhost:5555/api/v1/articles/";
+  String getArticles({
+    required String userID,
+  }) =>
+      "http://localhost:5555/api/v1/articles/$userID/getArticles/";
 }

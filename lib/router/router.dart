@@ -6,7 +6,7 @@ import 'package:serti0x_blog_editor/screens/landing_page/landing_page.dart';
 
 final loggedOutRoute = RouteMap(
   routes: {
-    '/': (route) => const MaterialPage(
+    RouteNames.instance.landingPage: (route) => const MaterialPage(
           child: LandingPage(),
         ),
     RouteNames.instance.document: (route) =>
@@ -16,6 +16,9 @@ final loggedOutRoute = RouteMap(
 
 final loggedInRoute = RouteMap(
   routes: {
+    RouteNames.instance.landingPage: (route) => const MaterialPage(
+          child: LandingPage(),
+        ),
     //!
     RouteNames.instance.document: (route) =>
         const MaterialPage(child: DocumentScreen())

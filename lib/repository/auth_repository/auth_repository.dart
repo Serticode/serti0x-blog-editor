@@ -13,7 +13,7 @@ import "package:serti0x_blog_editor/utilities/app_extensions.dart";
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
     client: Client(),
-    localStorageRepository: SharedPrefRepository(),
+    sharedPrefRepository: SharedPrefRepository(),
     networkConstants: NetworkConstants.instance,
   ),
 );
@@ -23,10 +23,10 @@ final userProvider = StateProvider<UserModel?>((ref) => null);
 class AuthRepository {
   AuthRepository({
     required Client client,
-    required SharedPrefRepository localStorageRepository,
+    required SharedPrefRepository sharedPrefRepository,
     required NetworkConstants networkConstants,
   })  : _client = client,
-        _sharedPrefRepo = localStorageRepository,
+        _sharedPrefRepo = sharedPrefRepository,
         _networkConstants = networkConstants;
   final Client _client;
   final SharedPrefRepository _sharedPrefRepo;
@@ -122,7 +122,29 @@ class AuthRepository {
   }
 
   //!
-  void signOut() async {
-    _sharedPrefRepo.setToken(token: "");
+  Future<void> signOut() async {
+    try {
+      String? token = await _sharedPrefRepo.getToken();
+
+      if (token != null) {
+        var response = await _client.delete(
+          Uri.parse(_networkConstants.logout),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          },
+        );
+
+        switch (response.statusCode) {
+          case 204:
+            _sharedPrefRepo.setToken(token: "");
+
+            _sharedPrefRepo.setToken(token: token);
+            break;
+        }
+      }
+    } catch (error) {
+      "SIGN OUT ERROR: $error";
+    }
   }
 }

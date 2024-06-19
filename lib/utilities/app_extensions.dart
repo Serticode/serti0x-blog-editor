@@ -483,3 +483,26 @@ extension ListenableBuilderExtension on List<Listenable> {
     );
   }
 }
+
+extension AsyncSnapshotX<AnyType> on AsyncSnapshot<AnyType> {
+  Widget when({
+    required Widget Function() loading,
+    required Widget Function(Object? error, StackTrace? stackTrace) onError,
+    required Widget Function(AnyType data) onDataGotten,
+  }) {
+    switch (connectionState) {
+      case ConnectionState.none:
+      case ConnectionState.waiting:
+        return loading();
+      case ConnectionState.active:
+      case ConnectionState.done:
+        if (hasError) {
+          return onError(error, stackTrace);
+        } else if (hasData) {
+          return onDataGotten(data as AnyType);
+        }
+
+        return loading();
+    }
+  }
+}

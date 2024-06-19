@@ -38,7 +38,7 @@ class AppStrings {
   final String soMuchMore = "So Much More Than A Note Taking Dashboard";
   final String welcome = "Welcome to Serti's Blog.";
   final String welcomeRider =
-      "Work together in real time, organize information \nand create a learning note from your experience.";
+      "Work together in real time, organize information and create a learning note from your experience.";
   final String contactMe = "Contact Me 🙈.";
   final String preview = "Preview";
 

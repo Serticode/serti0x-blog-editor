@@ -98,6 +98,83 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Article": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"userID": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"content": {
+						"items": {},
+						"type": "array"
+					},
+					"category": {
+						"type": "string"
+					},
+					"mediumURL": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"userID",
+					"title",
+					"content",
+					"category",
+					"mediumURL",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateArticleParams": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"category": {
+						"type": "string"
+					},
+					"mediumURL": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userID",
+					"title",
+					"category",
+					"mediumURL"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetMyArticlesParamsResponse": {
+				"properties": {
+					"articles": {
+						"items": {
+							"$ref": "#/components/schemas/Article"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"articles"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -231,6 +308,86 @@
 						}
 					}
 				}
+			}
+		},
+		"/api/v1/articles": {
+			"post": {
+				"operationId": "createArticle",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Article"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": ""
+					},
+					"400": {
+						"description": "Original articleID is missing"
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateArticleParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/articles/{userID}/getArticles": {
+			"get": {
+				"operationId": "getMyArticles",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetMyArticlesParamsResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "You have a bad request, kindly check your path or API request section"
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},

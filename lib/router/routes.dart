@@ -8,4 +8,5 @@ class RouteNames {
   }
 
   final String document = "/document";
+  final String landingPage = "/";
 }

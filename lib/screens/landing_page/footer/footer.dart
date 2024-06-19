@@ -8,59 +8,51 @@ import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
 class Footer extends ConsumerWidget {
   const Footer({super.key});
   static final appStrings = AppStrings.instance;
+  static const appColours = AppColours.instance;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      height: 220,
-      child: Row(
+      height: 200,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              appStrings.soMuchMore.txt14(
-                context: context,
-              ),
-
-              //!
-              10.0.sizedBoxHeight,
-
-              //!
-              appStrings.welcome.txt(
-                context: context,
-                fontSize: 28,
-              ),
-
-              12.0.sizedBoxHeight,
-
-              //!
-              appStrings.welcomeRider.txt12(
-                context: context,
-                color: AppColours.instance.grey500,
-              ),
-
-              const Spacer(),
-
-              //!
-              appStrings.developerName.txt(
-                context: context,
-                fontSize: 18.0,
-              ),
-            ],
+          //!
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: appStrings.preview
+                .txt24(
+                  context: context,
+                  color: appColours.blue,
+                  fontWeight: FontWeight.w600,
+                )
+                .fadeInFromBottom(),
           ),
 
-          const Spacer(),
+          //!
+          appStrings.soMuchMore.txt12(
+            context: context,
+            color: AppColours.instance.grey500,
+          ),
 
           //!
-          Image.asset(
-            appStrings.footerImage.png,
-          )
-              .transformToScale(
-                scale: 1.5,
-              )
-              .fadeInFromBottom(),
+          appStrings.welcome.txt24(
+            context: context,
+          ),
 
-          12.0.sizedBoxHeight,
+          //!
+          appStrings.welcomeRider.txt12(
+            context: context,
+            color: AppColours.instance.grey500,
+          ),
+
+          //!
+          appStrings.developerName
+              .txt(
+                context: context,
+                fontSize: 18.0,
+              )
+              .alignCenterLeft(),
         ],
       ).generalPadding,
     );

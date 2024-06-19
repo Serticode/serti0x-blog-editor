@@ -27,11 +27,15 @@ class LandingPage extends ConsumerWidget {
           //!
           SvgPicture.asset(
             appStrings.verticalLines.svg,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
           ),
 
           //!
           SvgPicture.asset(
             appStrings.backDrop.svg,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
           ),
 
           //!
@@ -71,37 +75,40 @@ class LandingPage extends ConsumerWidget {
                   ),
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 21,
+                    padding: const EdgeInsets.only(
+                      top: 18,
+                      left: 21,
+                      right: 21,
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
                         32,
                       ),
                     ),
-                    child: Column(
-                      children: [
-                        //! TODO: @Serticode - ADD THE PROJECT IMAGE.
-                        const Spacer(),
-
-                        //!
-                        appStrings.preview.txt16(
-                          context: context,
-                          color: appColours.blue,
-                          fontWeight: FontWeight.w500,
-                        )
-                      ],
-                    ).alignBottomCenter(),
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(
+                        scrollbars: false,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            6.0.sizedBoxHeight,
+                            Image.asset(
+                              "productImage".png,
+                            ),
+                          ],
+                        ).alignBottomCenter(),
+                      ),
+                    ),
                   ),
                 ).generalPadding,
-              )
+              ),
+
+              const Footer()
             ],
           ).alignCenter(),
         ],
       ),
-
-      bottomNavigationBar: const Footer(),
     );
   }
 }
