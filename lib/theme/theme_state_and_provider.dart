@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:serti0x_blog_editor/shared/app_strings.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_strings.dart';
 import 'package:serti0x_blog_editor/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

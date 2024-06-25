@@ -2,12 +2,12 @@ import "dart:convert";
 import "package:flutter_dotenv/flutter_dotenv.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart";
-import "package:serti0x_blog_editor/models/data_or_error_model.dart";
-import "package:serti0x_blog_editor/models/user_model.dart";
-import "package:serti0x_blog_editor/repository/preferences_repository/shared_preferences_repository.dart";
+import "package:serti0x_blog_editor/services/models/data_or_error_model.dart";
+import "package:serti0x_blog_editor/services/models/user_model.dart";
+import "package:serti0x_blog_editor/services/repository/preferences_repository/shared_preferences_repository.dart";
 import "package:serti0x_blog_editor/shared/env_constants.dart";
 import "package:serti0x_blog_editor/shared/network_constants.dart";
-import "package:serti0x_blog_editor/utilities/app_extensions.dart";
+import "package:serti0x_blog_editor/shared/utils/app_extensions.dart";
 
 //!
 final authRepositoryProvider = Provider(

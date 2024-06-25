@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:serti0x_blog_editor/models/article_model.dart';
+import 'package:serti0x_blog_editor/services/models/article_model.dart';
 
 final articleInStateProvider =
     StateNotifierProvider<ArticleInState, ArticleModel>((ref) {

@@ -1,9 +1,9 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
-import 'package:serti0x_blog_editor/shared/app_strings.dart';
-import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_strings.dart';
+import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
 class Footer extends ConsumerWidget {
   const Footer({super.key});

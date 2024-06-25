@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serti0x_blog_editor/screens/widgets/app_loader.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
 import 'package:serti0x_blog_editor/shared/type_defs.dart';
-import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
+import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
 class RegularButton extends ConsumerWidget {
   const RegularButton({

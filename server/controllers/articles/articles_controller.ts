@@ -16,6 +16,10 @@ import {
   Article,
   CreateArticleParams,
   GetMyArticlesParamsResponse,
+  UpdateArticleMediumURLParams,
+  UpdateArticleMediumURLResponse,
+  UpdateArticleTitleParams,
+  UpdateArticleTitleParamsResponse,
 } from "../../services/models/article_model";
 
 //!
@@ -47,6 +51,34 @@ export class ArticlesController extends Controller {
   ): Promise<GetMyArticlesParamsResponse> {
     return new ArticlesService().getMyArticles({
       userID: userID,
+    });
+  }
+
+  @Post("/updateArticleTitle")
+  @OperationId("updateArticleTitle")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.BAD_REQUEST, "ArticleID is missing")
+  public async updateArticleTitle(
+    @Body() body: UpdateArticleTitleParams
+  ): Promise<UpdateArticleTitleParamsResponse> {
+    return new ArticlesService().updateArticleTitle({
+      title: body.title,
+      articleID: body.articleID,
+    });
+  }
+
+  @Post("/updateArticleMediumURL")
+  @OperationId("updateArticleMediumURL")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.BAD_REQUEST, "ArticleID is missing")
+  public async updateArticleMediumURL(
+    @Body() body: UpdateArticleMediumURLParams
+  ): Promise<UpdateArticleMediumURLResponse> {
+    return new ArticlesService().updateArticleMediumURL({
+      mediumURL: body.mediumURL,
+      articleID: body.articleID,
     });
   }
 }

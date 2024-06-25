@@ -23,8 +23,8 @@ class ArticleModel extends MapView<String, dynamic> {
     required Map<String, dynamic> json,
   }) {
     return ArticleModel(
-      articleID: json["articleID"] ?? "",
-      ownerID: json["ownerID"] ?? "",
+      articleID: json["id"] ?? "",
+      ownerID: json["userId"] ?? "",
       title: json["title"] ?? "",
       content: json["content"] != null ? List.from(json["content"]) : [],
       createdAt:

@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:intl/intl.dart";
-import "package:serti0x_blog_editor/models/article_model.dart";
-import "package:serti0x_blog_editor/shared/app_colours.dart";
+import "package:serti0x_blog_editor/services/models/article_model.dart";
+import "package:serti0x_blog_editor/shared/constants/app_colours.dart";
 
 class AppUtils {
   //!

@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:serti0x_blog_editor/models/article_model.dart';
+import 'package:serti0x_blog_editor/services/models/article_model.dart';
 import 'package:serti0x_blog_editor/services/article_state/article_state.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
-import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
-import 'package:serti0x_blog_editor/utilities/utils.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
+import 'package:serti0x_blog_editor/shared/utils/utils.dart';
 
 class ArticleCard extends ConsumerWidget {
   const ArticleCard({
@@ -19,8 +19,7 @@ class ArticleCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const coloursInstance = AppColours.instance;
-    final currentArticle = ref.watch(articleInStateProvider);
-    final bool isCurrentArticle = currentArticle == article;
+    final bool isCurrentArticle = ref.watch(articleInStateProvider) == article;
 
     return Container(
       height: 250,

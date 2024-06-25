@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
 
 class AppLoader extends StatefulWidget {
   const AppLoader({

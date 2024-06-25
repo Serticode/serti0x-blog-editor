@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
-import 'package:serti0x_blog_editor/shared/app_strings.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_strings.dart';
 import 'fade_transition.dart';
 
 class AppTheme {

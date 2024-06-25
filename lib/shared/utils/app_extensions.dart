@@ -6,8 +6,8 @@ import "package:flutter/services.dart";
 import "package:flutter_animate/flutter_animate.dart";
 import "package:flutter_screenutil/flutter_screenutil.dart";
 import "package:intl/intl.dart";
-import "package:serti0x_blog_editor/shared/app_colours.dart";
-import "package:serti0x_blog_editor/shared/app_strings.dart";
+import "package:serti0x_blog_editor/shared/constants/app_colours.dart";
+import "package:serti0x_blog_editor/shared/constants/app_strings.dart";
 import "package:serti0x_blog_editor/shared/type_defs.dart";
 
 final appStrings = AppStrings.instance;

@@ -5,6 +5,10 @@ import {
   GetMyArticlesParams,
   GetMyArticlesParamsResponse,
   Article as TSOAArticleModel,
+  UpdateArticleMediumURLParams,
+  UpdateArticleMediumURLResponse,
+  UpdateArticleTitleParams,
+  UpdateArticleTitleParamsResponse,
 } from "../../services/models/article_model";
 
 export default class ArticlesService {
@@ -51,6 +55,40 @@ export default class ArticlesService {
       return {
         articles: articles.map((article) => article.toJSON()),
       };
+    }
+  }
+
+  //! UPDATE ARTICLE TITLE
+  public async updateArticleTitle(
+    params: UpdateArticleTitleParams
+  ): Promise<UpdateArticleTitleParamsResponse> {
+    const { articleID, title } = params;
+
+    const article = await Article.findByIdAndUpdate(articleID, {
+      title: title,
+    });
+
+    if (!article) {
+      throw new ArticleNotFoundError();
+    } else {
+      return article.toJSON();
+    }
+  }
+
+  //! UPDATE ARTICLE MEDIUM URL
+  public async updateArticleMediumURL(
+    params: UpdateArticleMediumURLParams
+  ): Promise<UpdateArticleMediumURLResponse> {
+    const { articleID, mediumURL } = params;
+
+    const article = await Article.findByIdAndUpdate(articleID, {
+      mediumURL: mediumURL,
+    });
+
+    if (!article) {
+      throw new ArticleNotFoundError();
+    } else {
+      return article.toJSON();
     }
   }
 }

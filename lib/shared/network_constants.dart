@@ -16,6 +16,10 @@ class NetworkConstants {
 
   //! ARTICLES
   final String createArticle = "http://localhost:5555/api/v1/articles/";
+  final String updateArticleTitle =
+      "http://localhost:5555/api/v1/articles/updateArticleTitle/";
+  final String updateArticleMediumURL =
+      "http://localhost:5555/api/v1/articles/updateArticleMediumURL/";
   String getArticles({
     required String userID,
   }) =>

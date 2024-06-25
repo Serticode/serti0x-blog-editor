@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:serti0x_blog_editor/repository/auth_repository/auth_repository.dart';
+import 'package:serti0x_blog_editor/services/repository/auth_repository/auth_repository.dart';
 import 'package:serti0x_blog_editor/router/routes.dart';
 import 'package:serti0x_blog_editor/screens/widgets/app_button.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
-import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
 class DocumentsDrawer extends ConsumerWidget {
   const DocumentsDrawer({super.key});

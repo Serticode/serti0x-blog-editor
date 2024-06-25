@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:serti0x_blog_editor/models/data_or_error_model.dart';
-import 'package:serti0x_blog_editor/repository/sockets_repository/sockets_repository.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
+import 'package:serti0x_blog_editor/services/models/data_or_error_model.dart';
+import 'package:serti0x_blog_editor/services/repository/sockets_repository/sockets_repository.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
 
 class ArticleEditor extends ConsumerStatefulWidget {
   const ArticleEditor({super.key});
@@ -15,8 +15,6 @@ class ArticleEditor extends ConsumerStatefulWidget {
 }
 
 class _ArticleEditorState extends ConsumerState<ArticleEditor> {
-  TextEditingController titleController =
-      TextEditingController(text: 'Untitled Document');
   final quill.QuillController _controller = quill.QuillController.basic();
   DataOrErrorModel? dataOrErrorModel;
   SocketRepository socketRepository = SocketRepository();

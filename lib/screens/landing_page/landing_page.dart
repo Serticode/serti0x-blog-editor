@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:serti0x_blog_editor/screens/landing_page/footer/footer.dart';
 import 'package:serti0x_blog_editor/screens/landing_page/header/header.dart';
-import 'package:serti0x_blog_editor/shared/app_colours.dart';
-import 'package:serti0x_blog_editor/shared/app_strings.dart';
-import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_strings.dart';
+import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
 class LandingPage extends ConsumerWidget {
   const LandingPage({super.key});

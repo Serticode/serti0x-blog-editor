@@ -30,3 +30,29 @@ export interface GetMyArticlesParams {
 export interface GetMyArticlesParamsResponse {
   articles: Article[];
 }
+
+//!
+//! UPDATE ARTICLE TITLE PARAMS
+export interface UpdateArticleTitleParams {
+  title: string;
+  articleID: string;
+}
+
+//!
+//! UPDATE ARTICLE TITLE PARAMS RESPONSE
+export interface UpdateArticleTitleParamsResponse {
+  article: Article;
+}
+
+//!
+//! UPDATE ARTICLE MEDIUM URL PARAMS
+export interface UpdateArticleMediumURLParams {
+  mediumURL: string;
+  articleID: string;
+}
+
+//!
+//! UPDATE ARTICLE MEDIUM URL RESPONSE
+export interface UpdateArticleMediumURLResponse {
+  article: Article;
+}

@@ -1,12 +1,12 @@
 import "dart:convert";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart";
-import "package:serti0x_blog_editor/models/article_model.dart";
-import "package:serti0x_blog_editor/models/data_or_error_model.dart";
-import "package:serti0x_blog_editor/repository/auth_repository/auth_repository.dart";
-import "package:serti0x_blog_editor/repository/preferences_repository/shared_preferences_repository.dart";
+import "package:serti0x_blog_editor/services/models/article_model.dart";
+import "package:serti0x_blog_editor/services/models/data_or_error_model.dart";
+import "package:serti0x_blog_editor/services/repository/auth_repository/auth_repository.dart";
+import "package:serti0x_blog_editor/services/repository/preferences_repository/shared_preferences_repository.dart";
 import "package:serti0x_blog_editor/shared/network_constants.dart";
-import "package:serti0x_blog_editor/utilities/app_extensions.dart";
+import "package:serti0x_blog_editor/shared/utils/app_extensions.dart";
 
 final articlesRepositoryProvider = Provider(
   (ref) => DocumentRepository(
@@ -33,23 +33,24 @@ class DocumentRepository {
   final Ref _repoRef;
   final SharedPrefRepository _sharedPrefRepo;
 
-  Future<DataOrErrorModel> createArticles(String token) async {
+  Future<DataOrErrorModel> createArticle({required String token}) async {
     DataOrErrorModel error = DataOrErrorModel(
       error: "Some unexpected error occurred.",
       data: null,
     );
+
     try {
       final response = await _client.post(
         Uri.parse(_networkConstants.createArticle),
         headers: {
-          "Content-Type": "application/json; charset=UTF-8",
+          "Content-Type": "application/json",
           "Authorization": "Bearer $token",
         },
         body: jsonEncode({
           "userID": _repoRef.read(userProvider)!.userID,
-          "title": "",
-          "category": "",
-          "mediumURL": "",
+          "title": "New Article",
+          "category": ArticleCategory.none.categoryName,
+          "mediumURL": "No URL",
         }),
       );
 
@@ -140,21 +141,26 @@ class DocumentRepository {
 
   //!
   void updateTitle({
-    required String token,
-    required String id,
+    required String articleID,
     required String title,
   }) async {
-    await _client.post(
-      Uri.parse("$host/doc/title"),
+    String? token = await _sharedPrefRepo.getToken();
+
+    final response = await _client.post(
+      Uri.parse(
+        _networkConstants.updateArticleTitle,
+      ),
       headers: {
-        "Content-Type": "application/json; charset=UTF-8",
-        "x-auth-token": token,
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
       },
-      body: jsonEncode({
+      body: {
+        "articleID": articleID,
         "title": title,
-        "id": id,
-      }),
+      },
     );
+
+    "UPDATE ARTICLE RESPONSE: ${response.body}".log();
   }
 
   //!

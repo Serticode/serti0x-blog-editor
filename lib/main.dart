@@ -3,12 +3,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:routemaster/routemaster.dart';
-import 'package:serti0x_blog_editor/models/data_or_error_model.dart';
-import 'package:serti0x_blog_editor/repository/auth_repository/auth_repository.dart';
+import 'package:serti0x_blog_editor/services/models/data_or_error_model.dart';
+import 'package:serti0x_blog_editor/services/repository/auth_repository/auth_repository.dart';
 import 'package:serti0x_blog_editor/router/router.dart';
-import 'package:serti0x_blog_editor/shared/app_strings.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_strings.dart';
 import 'package:serti0x_blog_editor/theme/theme_state_and_provider.dart';
-import 'package:serti0x_blog_editor/utilities/app_extensions.dart';
+import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
 Future<void> main() async {
   await dotenv.load();

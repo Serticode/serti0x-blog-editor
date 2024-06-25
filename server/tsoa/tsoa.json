@@ -175,6 +175,62 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"UpdateArticleTitleParamsResponse": {
+				"properties": {
+					"article": {
+						"$ref": "#/components/schemas/Article"
+					}
+				},
+				"required": [
+					"article"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateArticleTitleParams": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"articleID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"articleID"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateArticleMediumURLResponse": {
+				"properties": {
+					"article": {
+						"$ref": "#/components/schemas/Article"
+					}
+				},
+				"required": [
+					"article"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateArticleMediumURLParams": {
+				"properties": {
+					"mediumURL": {
+						"type": "string"
+					},
+					"articleID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"mediumURL",
+					"articleID"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -388,6 +444,84 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/v1/articles/updateArticleTitle": {
+			"post": {
+				"operationId": "updateArticleTitle",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateArticleTitleParamsResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "ArticleID is missing"
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateArticleTitleParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/articles/updateArticleMediumURL": {
+			"post": {
+				"operationId": "updateArticleMediumURL",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateArticleMediumURLResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "ArticleID is missing"
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateArticleMediumURLParams"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

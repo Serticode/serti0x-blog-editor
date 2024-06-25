@@ -1,5 +1,5 @@
-import 'package:serti0x_blog_editor/repository/sockets_repository/sockets_client.dart';
-import 'package:serti0x_blog_editor/shared/app_strings.dart';
+import 'package:serti0x_blog_editor/services/repository/sockets_repository/sockets_client.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_strings.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class SocketRepository {
