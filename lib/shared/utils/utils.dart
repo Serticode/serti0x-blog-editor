@@ -80,7 +80,7 @@ class AppUtils {
 
   //!
   //!
-  MaterialColor getMaterialColor({
+  MaterialColor getMaterialColour({
     required Color theColour,
   }) {
     final int red = theColour.red;
