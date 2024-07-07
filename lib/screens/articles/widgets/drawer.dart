@@ -10,8 +10,8 @@ import 'package:serti0x_blog_editor/screens/widgets/app_button.dart';
 import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
 import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
-class DocumentsDrawer extends ConsumerWidget {
-  const DocumentsDrawer({super.key});
+class ArticlesDrawer extends ConsumerWidget {
+  const ArticlesDrawer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -14,7 +14,7 @@ class ArticleScreen extends ConsumerWidget {
         children: [
           SizedBox(
             width: 120,
-            child: DocumentsDrawer(),
+            child: ArticlesDrawer(),
           ),
 
           //! ARTICLES

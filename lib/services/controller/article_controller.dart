@@ -49,9 +49,14 @@ class ArticleController {
         .createArticle(token: accessToken);
 
     if (dataOrError.data != null) {
+      _controllerRef.invalidate(articlesRepositoryProvider);
+
+      await Future.delayed(const Duration(seconds: 5));
+
       final newArticle = ArticleModel.fromJSON(
         json: dataOrError.data,
       );
+
       _controllerRef
           .read(articleInStateProvider.notifier)
           .updateArticleInState(theArticle: newArticle);
@@ -67,14 +72,4 @@ class ArticleController {
       );
     }
   }
-
-  //! UPDATE TITLE
-  /* Future<void> updateTitle({
-    required String title,
-    required String articleID,
-  }) async {
-    await _controllerRef
-        .read(articlesRepositoryProvider)
-        .updateTitle(articleID: articleID, title: title);
-  } */
 }

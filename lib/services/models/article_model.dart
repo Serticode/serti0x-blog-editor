@@ -41,6 +41,26 @@ class ArticleModel extends MapView<String, dynamic> {
   DateTime? createdAt;
   String? category;
   String? mediumURL;
+
+  ArticleModel copyWith({
+    String? ownerID,
+    String? title,
+    String? articleID,
+    List? content,
+    DateTime? createdAt,
+    String? category,
+    String? mediumURL,
+  }) {
+    return ArticleModel(
+      ownerID: ownerID ?? this.ownerID,
+      title: title ?? this.title,
+      articleID: articleID ?? this.articleID,
+      content: content ?? this.content,
+      createdAt: createdAt ?? this.createdAt,
+      category: category ?? this.category,
+      mediumURL: mediumURL ?? this.mediumURL,
+    );
+  }
 }
 
 //!

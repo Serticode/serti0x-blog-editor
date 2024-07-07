@@ -20,7 +20,9 @@ class EditArticleView extends ConsumerWidget {
 
   static const coloursInstance = AppColours.instance;
 
-  void updateArticleTitle({required WidgetRef ref}) {
+  void updateArticleTitle({
+    required WidgetRef ref,
+  }) {
     ref.read(articlesRepositoryProvider).updateTitle(
           articleID: ref.read(articleInStateProvider).articleID!,
           title:

@@ -59,7 +59,6 @@ class ArticlesView extends ConsumerWidget {
                 21.0.sizedBoxHeight,
 
                 //!
-
                 Expanded(
                   child: gottenData.when(
                     onDataGotten: (dataOrErrorModel) {

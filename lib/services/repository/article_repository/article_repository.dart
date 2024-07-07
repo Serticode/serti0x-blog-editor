@@ -1,6 +1,7 @@
 import "dart:convert";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:http/http.dart";
+import "package:serti0x_blog_editor/services/article_state/article_state.dart";
 import "package:serti0x_blog_editor/services/models/article_model.dart";
 import "package:serti0x_blog_editor/services/models/data_or_error_model.dart";
 import "package:serti0x_blog_editor/services/repository/auth_repository/auth_repository.dart";
@@ -144,27 +145,43 @@ class DocumentRepository {
     required String articleID,
     required String title,
   }) async {
-    String? token = await _sharedPrefRepo.getToken();
+    try {
+      String? token = await _sharedPrefRepo.getToken();
 
-    final response = await _client.post(
-      Uri.parse(
-        _networkConstants.updateArticleTitle,
-      ),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
-      body: {
-        "articleID": articleID,
-        "title": title,
-      },
-    );
+      final response = await _client.post(
+        Uri.parse(
+          _networkConstants.updateArticleTitle,
+        ),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({
+          "title": title,
+          "articleID": articleID,
+        }),
+      );
 
-    "UPDATE ARTICLE RESPONSE: ${response.body}".log();
+      switch (response.statusCode) {
+        case 200:
+          _repoRef
+              .read(articleInStateProvider.notifier)
+              .updateArticleInStateTitle(
+                title: title,
+              );
+
+          break;
+        default:
+          "UPDATE ARTICLE TITLE FROM SWITCH STATEMENT: ${response.body}".log();
+          break;
+      }
+    } catch (error) {
+      "UPDATE ARTICLE TITLE ERROR: $error".log();
+    }
   }
 
   //!
-  Future<DataOrErrorModel> getDocumentById(String token, String id) async {
+  /* Future<DataOrErrorModel> getDocumentById(String token, String id) async {
     DataOrErrorModel error = DataOrErrorModel(
       error: "Some unexpected error occurred.",
       data: null,
@@ -197,5 +214,5 @@ class DocumentRepository {
       );
     }
     return error;
-  }
+  } */
 }

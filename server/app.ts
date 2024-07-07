@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express, { json, urlencoded } from "express";
 import { createServer } from "http";
 import morgan from "morgan";
+import { Server as SocketIOServer } from "socket.io";
 import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
 import { errorHandlerMiddleware } from "./middleware/error_handler";
@@ -16,7 +17,7 @@ const app = express();
 //!
 //! LIST OF EVERYTHING THE APP USES
 //! MIDDLE WARE FOR PARSING JSON
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 app.use(urlencoded({ extended: true }));
 app.use(json());
 app.use(cors());
@@ -49,7 +50,7 @@ const start = async () => {
       throw new Error("MONGO_URI is missing in .env file");
     }
 
-    console.log("Connecting to database...");
+    console.log(`Connecting to database...`);
 
     await connectToDatabase(mongoUri);
 
@@ -60,6 +61,22 @@ const start = async () => {
         console.log("Server is running on port", PORT);
       })
     );
+
+    const io = new SocketIOServer(server);
+
+    io.on("connection", (socket) => {
+      socket.on("join", (documentId) => {
+        socket.join(documentId);
+      });
+
+      socket.on("typing", (data) => {
+        socket.broadcast.to(data.room).emit("changes", data);
+      });
+
+      socket.on("save", async (data) => {
+        console.log("SOCKET IO SAVE DATA: ", data);
+      });
+    });
 
     server.listen();
   } catch (error) {
