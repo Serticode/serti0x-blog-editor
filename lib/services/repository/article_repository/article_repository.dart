@@ -141,7 +141,7 @@ class DocumentRepository {
   }
 
   //!
-  void updateTitle({
+  Future<void> updateTitle({
     required String articleID,
     required String title,
   }) async {
@@ -181,14 +181,17 @@ class DocumentRepository {
   }
 
   //!
-  /* Future<DataOrErrorModel> getDocumentById(String token, String id) async {
+  Future<DataOrErrorModel> getDocumentById({
+    required String token,
+    required String documentID,
+  }) async {
     DataOrErrorModel error = DataOrErrorModel(
       error: "Some unexpected error occurred.",
       data: null,
     );
     try {
       final response = await _client.get(
-        Uri.parse("$host/doc/$id"),
+        Uri.parse("$host/doc/$documentID"),
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
           "x-auth-token": token,
@@ -214,5 +217,5 @@ class DocumentRepository {
       );
     }
     return error;
-  } */
+  }
 }

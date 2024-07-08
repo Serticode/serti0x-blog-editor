@@ -107,18 +107,13 @@ class EditArticleView extends ConsumerWidget {
                               ),
                               contentPadding: const EdgeInsets.only(left: 10),
                             ),
-                            onFieldSubmitted: (value) {
-                              try {
-                                updateArticleTitle(ref: ref);
-                              } catch (e) {
-                                "ERROR: $e".log();
-                              }
-                              /* await ref
+                            onFieldSubmitted: (value) async {
+                              await ref
                                   .read(articleControllerProvider)
                                   .updateTitle(
-                                    title: value,
+                                    title: value.trim(),
                                     articleID: currentArticle.articleID!,
-                                  ); */
+                                  );
                             },
                           ),
                         ),

@@ -72,4 +72,15 @@ class ArticleController {
       );
     }
   }
+
+  //! UPDATE TITLE
+  Future<void> updateTitle({
+    required String title,
+    required String articleID,
+  }) async {
+    await _controllerRef.read(articlesRepositoryProvider).updateTitle(
+          articleID: articleID,
+          title: title,
+        );
+  }
 }
