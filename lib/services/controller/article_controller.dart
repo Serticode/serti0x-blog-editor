@@ -83,4 +83,15 @@ class ArticleController {
           title: title,
         );
   }
+
+  //! UPDATE CATEGORY
+  Future<void> updateArticleCategory({
+    required String categoryName,
+    required String articleID,
+  }) async {
+    await _controllerRef.read(articlesRepositoryProvider).updateArticleCategory(
+          articleID: articleID,
+          categoryName: categoryName,
+        );
+  }
 }

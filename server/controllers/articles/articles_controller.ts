@@ -16,6 +16,8 @@ import {
   Article,
   CreateArticleParams,
   GetMyArticlesParamsResponse,
+  UpdateArticleCategoryParams,
+  UpdateArticleCategoryResponse,
   UpdateArticleMediumURLParams,
   UpdateArticleMediumURLResponse,
   UpdateArticleTitleParams,
@@ -78,6 +80,20 @@ export class ArticlesController extends Controller {
   ): Promise<UpdateArticleMediumURLResponse> {
     return new ArticlesService().updateArticleMediumURL({
       mediumURL: body.mediumURL,
+      articleID: body.articleID,
+    });
+  }
+
+  @Post("/updateArticleCategory")
+  @OperationId("updateArticleCategory")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(StatusCodes.BAD_REQUEST, "ArticleID is missing")
+  public async updateArticleCategory(
+    @Body() body: UpdateArticleCategoryParams
+  ): Promise<UpdateArticleCategoryResponse> {
+    return new ArticlesService().updateArticleCategory({
+      categoryName: body.categoryName,
       articleID: body.articleID,
     });
   }

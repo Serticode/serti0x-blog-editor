@@ -181,6 +181,58 @@ class DocumentRepository {
   }
 
   //!
+  Future<void> updateArticleCategory({
+    required String articleID,
+    required String categoryName,
+  }) async {
+    try {
+      String? token = await _sharedPrefRepo.getToken();
+
+      final response = await _client.post(
+        Uri.parse(
+          _networkConstants.updateArticleCategory,
+        ),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({
+          "categoryName": categoryName,
+          "articleID": articleID,
+        }),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          final dataOrError = await getDocumentById(
+            token: token ?? "",
+            documentID: articleID,
+          );
+
+          await _repoRef
+              .read(articleInStateProvider.notifier)
+              .refreshArticleRepoProvider();
+
+          if (dataOrError.data != null) {
+            "DATA: ${dataOrError.data}".log();
+
+            _repoRef.read(articleInStateProvider.notifier).updateArticleInState(
+                  theArticle: dataOrError.data as ArticleModel,
+                );
+          }
+
+          break;
+        default:
+          "UPDATE ARTICLE CATEGORY FROM SWITCH STATEMENT: ${response.body}"
+              .log();
+          break;
+      }
+    } catch (error) {
+      "UPDATE ARTICLE CATEGORY ERROR: $error".log();
+    }
+  }
+
+  //!
   Future<DataOrErrorModel> getDocumentById({
     required String token,
     required String documentID,

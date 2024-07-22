@@ -20,6 +20,8 @@ class NetworkConstants {
       "http://localhost:5555/api/v1/articles/updateArticleTitle/";
   final String updateArticleMediumURL =
       "http://localhost:5555/api/v1/articles/updateArticleMediumURL/";
+  final String updateArticleCategory =
+      "http://localhost:5555/api/v1/articles/updateArticleCategory/";
   String getArticles({
     required String userID,
   }) =>

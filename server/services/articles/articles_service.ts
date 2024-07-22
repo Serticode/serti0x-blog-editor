@@ -5,6 +5,8 @@ import {
   GetMyArticlesParams,
   GetMyArticlesParamsResponse,
   Article as TSOAArticleModel,
+  UpdateArticleCategoryParams,
+  UpdateArticleCategoryResponse,
   UpdateArticleMediumURLParams,
   UpdateArticleMediumURLResponse,
   UpdateArticleTitleParams,
@@ -83,6 +85,22 @@ export default class ArticlesService {
 
     const article = await Article.findByIdAndUpdate(articleID, {
       mediumURL: mediumURL,
+    });
+
+    if (!article) {
+      throw new ArticleNotFoundError();
+    } else {
+      return article.toJSON();
+    }
+  }
+
+  public async updateArticleCategory(
+    params: UpdateArticleCategoryParams
+  ): Promise<UpdateArticleCategoryResponse> {
+    const { articleID, categoryName } = params;
+
+    const article = await Article.findByIdAndUpdate(articleID, {
+      category: categoryName,
     });
 
     if (!article) {

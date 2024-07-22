@@ -17,6 +17,7 @@ dependencies:
 
   #! OTHER UTILS
   flutter_quill: ^9.3.21
+  cool_dropdown: ^2.1.0
 
   #!STATE MANAGEMENT AND SUPPORTING UTILS
   flutter_riverpod: ^2.5.1

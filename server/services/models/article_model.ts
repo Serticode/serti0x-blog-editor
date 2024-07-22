@@ -56,3 +56,16 @@ export interface UpdateArticleMediumURLParams {
 export interface UpdateArticleMediumURLResponse {
   article: Article;
 }
+
+//!
+//! UPDATE ARTICLE CATEGORY PARAMS
+export interface UpdateArticleCategoryParams {
+  categoryName: string;
+  articleID: string;
+}
+
+//!
+//! UPDATE ARTICLE CATEGORY RESPONSE
+export interface UpdateArticleCategoryResponse {
+  article: Article;
+}

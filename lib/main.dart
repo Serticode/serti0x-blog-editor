@@ -68,14 +68,16 @@ class _Serti0xBlogEditorState extends ConsumerState<Serti0xBlogEditor> {
                 title: AppStrings.instance.appName,
                 debugShowCheckedModeBanner: false,
                 theme: appTheme,
-                routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
-                  final user = ref.watch(userProvider);
+                routerDelegate: RoutemasterDelegate(
+                  routesBuilder: (context) {
+                    final user = ref.watch(userProvider);
 
-                  if (user != null && user.token.isNotEmpty) {
-                    return loggedInRoute;
-                  }
-                  return loggedOutRoute;
-                }),
+                    if (user != null && user.token.isNotEmpty) {
+                      return loggedInRoute;
+                    }
+                    return loggedOutRoute;
+                  },
+                ),
                 routeInformationParser: const RoutemasterParser(),
               );
             }

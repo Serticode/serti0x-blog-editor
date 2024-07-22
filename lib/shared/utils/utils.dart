@@ -60,11 +60,11 @@ class AppUtils {
   //!
   //!
   static Color getArticleCategoryColour({
-    required ArticleModel currentArticle,
+    required String articleCategoryName,
   }) {
     const coloursInstance = AppColours.instance;
 
-    final category = getArticleCategory(categoryName: currentArticle.category!);
+    final category = getArticleCategory(categoryName: articleCategoryName);
 
     switch (category) {
       case ArticleCategory.backEnd:

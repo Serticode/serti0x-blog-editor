@@ -231,6 +231,34 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"UpdateArticleCategoryResponse": {
+				"properties": {
+					"article": {
+						"$ref": "#/components/schemas/Article"
+					}
+				},
+				"required": [
+					"article"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateArticleCategoryParams": {
+				"properties": {
+					"categoryName": {
+						"type": "string"
+					},
+					"articleID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"categoryName",
+					"articleID"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -518,6 +546,45 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UpdateArticleMediumURLParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/articles/updateArticleCategory": {
+			"post": {
+				"operationId": "updateArticleCategory",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateArticleCategoryResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "ArticleID is missing"
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateArticleCategoryParams"
 							}
 						}
 					}

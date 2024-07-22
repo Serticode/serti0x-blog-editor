@@ -32,7 +32,7 @@ class ArticleCard extends ConsumerWidget {
         border: Border.all(
           color: isCurrentArticle
               ? AppUtils.getArticleCategoryColour(
-                  currentArticle: article,
+                  articleCategoryName: article.category ?? "",
                 )
               : coloursInstance.grey300,
         ),
@@ -94,7 +94,7 @@ class ArticleCard extends ConsumerWidget {
                   width: 16.0,
                   height: 16.0,
                   color: AppUtils.getArticleCategoryColour(
-                    currentArticle: article,
+                    articleCategoryName: article.category ?? "",
                   ),
                 ),
 
@@ -106,7 +106,7 @@ class ArticleCard extends ConsumerWidget {
                   context: context,
                   fontSize: 10,
                   color: AppUtils.getArticleCategoryColour(
-                    currentArticle: article,
+                    articleCategoryName: article.category ?? "",
                   ),
                   fontWeight: FontWeight.w600,
                 ),

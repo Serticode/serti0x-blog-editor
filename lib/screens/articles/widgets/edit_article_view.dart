@@ -1,8 +1,9 @@
-// ignore_for_file: deprecated_member_use
+import 'package:cool_dropdown/cool_dropdown.dart';
+import 'package:cool_dropdown/models/cool_dropdown_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:serti0x_blog_editor/services/article_state/article_state.dart';
 import 'package:serti0x_blog_editor/services/controller/article_controller.dart';
 import 'package:serti0x_blog_editor/services/models/article_model.dart';
@@ -18,7 +19,11 @@ class EditArticleView extends ConsumerWidget {
     super.key,
   });
 
+  static final ValueNotifier<bool> showCategoryDropdown = false.toValueNotifier;
+
   static const coloursInstance = AppColours.instance;
+
+  static final articleCategoryDropdownController = DropdownController();
 
   void updateArticleTitle({
     required WidgetRef ref,
@@ -29,6 +34,16 @@ class EditArticleView extends ConsumerWidget {
               ref.read(articleControllerProvider).theTitleController.value.text,
         );
   }
+
+  static List<CoolDropdownItem<String>> dropdownItemList =
+      ArticleCategory.values
+          .map(
+            (articleCategory) => CoolDropdownItem<String>(
+              label: articleCategory.categoryName,
+              value: articleCategory.categoryName,
+            ),
+          )
+          .toList();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -88,7 +103,8 @@ class EditArticleView extends ConsumerWidget {
                           child: TextFormField(
                             controller: titleController,
                             cursorColor: AppUtils.getArticleCategoryColour(
-                              currentArticle: currentArticle,
+                              articleCategoryName:
+                                  currentArticle.category ?? "",
                             ),
                             style: TextStyle(
                               fontSize: 16,
@@ -151,7 +167,103 @@ class EditArticleView extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  SizedBox(
+                    height: 40.0,
+                    width: 120.0,
+                    child: CoolDropdown(
+                      controller: articleCategoryDropdownController,
+                      dropdownList: dropdownItemList,
+                      onChange: (value) async {
+                        if (currentArticle.articleID != null &&
+                            currentArticle.articleID!.isNotEmpty) {
+                          await ref
+                              .read(articleControllerProvider)
+                              .updateArticleCategory(
+                                categoryName: value,
+                                articleID: currentArticle.articleID ?? "",
+                              );
+                        }
+
+                        articleCategoryDropdownController.close();
+                      },
+
+                      //defaultItem: ,
+
+                      //!
+                      resultOptions: ResultOptions(
+                        placeholder: currentArticle.category,
+                        openBoxDecoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(18.r),
+                          border: Border.all(
+                            color: coloursInstance.grey200,
+                          ),
+                        ),
+                        boxDecoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(18.r),
+                          border: Border.all(
+                            color: coloursInstance.grey200,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+
+                      //!
+                      dropdownOptions: const DropdownOptions(
+                        top: 20,
+                        height: 400,
+                        gap: DropdownGap.all(5),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        align: DropdownAlign.left,
+                        animationType: DropdownAnimationType.size,
+                      ),
+
+                      //!
+                      dropdownTriangleOptions: const DropdownTriangleOptions(
+                        width: 0,
+                        height: 0,
+                      ),
+
+                      //! THE ITEMS DECORATION
+                      dropdownItemOptions: DropdownItemOptions(
+                        padding: const EdgeInsets.symmetric(
+                          //horizontal: 16.0,
+                          vertical: 4.0,
+                        ),
+                        boxDecoration: BoxDecoration(
+                          color: coloursInstance.grey200,
+                          /* border: Border.all(
+                            width: 0.5,
+                            color: coloursInstance.grey500,
+                          ), */
+                        ),
+                        selectedPadding: EdgeInsets.zero,
+                        selectedBoxDecoration: const BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        selectedTextStyle: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: coloursInstance.grey900,
+                          wordSpacing: 4,
+                          letterSpacing: 1.0,
+                        ),
+                        textStyle: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: coloursInstance.grey700,
+                          wordSpacing: 4,
+                          letterSpacing: 1.0,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  12.0.sizedBoxHeight,
+
+                  //!
+                  /* Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
@@ -192,7 +304,11 @@ class EditArticleView extends ConsumerWidget {
                         ],
                       ),
                     ),
-                  ),
+                  ).onTap(
+                    onTap: () {
+                      showCategoryDropdown.value = !showCategoryDropdown.value;
+                    },
+                  ), */
 
                   21.0.sizedBoxWidth,
 
@@ -212,11 +328,11 @@ class EditArticleView extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w600,
                     color: AppUtils.getArticleCategoryColour(
-                      currentArticle: currentArticle,
+                      articleCategoryName: currentArticle.category ?? "",
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

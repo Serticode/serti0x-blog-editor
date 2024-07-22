@@ -22,7 +22,7 @@ class ArticleInState extends StateNotifier<ArticleModel> {
             title: "",
             content: [],
             createdAt: DateTime.now(),
-            category: ArticleCategory.none.name,
+            category: ArticleCategory.none.categoryName,
             mediumURL: "",
           ),
         );
@@ -48,8 +48,8 @@ class ArticleInState extends StateNotifier<ArticleModel> {
       title: title,
       content: currentArticle.content,
       createdAt: currentArticle.createdAt,
-      category: currentArticle.ownerID,
-      mediumURL: currentArticle.ownerID,
+      category: currentArticle.category,
+      mediumURL: currentArticle.mediumURL,
     );
 
     _stateRef.invalidate(articlesRepositoryProvider);
@@ -59,5 +59,35 @@ class ArticleInState extends StateNotifier<ArticleModel> {
     });
 
     updateArticleInState(theArticle: updatedArticle);
+  }
+
+  //!
+  void updateArticleInStateCategory({
+    required String category,
+  }) async {
+    ArticleModel currentArticle = state;
+
+    final updatedArticle = ArticleModel(
+      articleID: currentArticle.articleID,
+      ownerID: currentArticle.ownerID,
+      title: currentArticle.title,
+      content: currentArticle.content,
+      createdAt: currentArticle.createdAt,
+      category: category,
+      mediumURL: currentArticle.mediumURL,
+    );
+
+    _stateRef.invalidate(articlesRepositoryProvider);
+
+    await Future.delayed(const Duration(seconds: 5)).then((value) {
+      "FUTURE.DELAYED DONE".log();
+    });
+
+    updateArticleInState(theArticle: updatedArticle);
+  }
+
+  //!
+  Future<void> refreshArticleRepoProvider() async {
+    _stateRef.invalidate(articlesRepositoryProvider);
   }
 }
