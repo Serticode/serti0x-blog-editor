@@ -107,10 +107,10 @@ extension PaddingExtension on Widget {
 //!
 //! EXTENSIONS ON STRING
 extension ImagePath on String {
-  String get png => "assets/images/$this.png";
-  String get jpg => "assets/images/$this.jpg";
-  String get jpeg => "assets/images/$this.jpeg";
-  String get gif => "assets/gif/$this.gif";
+  String get png => "images/$this.png";
+  String get jpg => "images/$this.jpg";
+  String get jpeg => "images/$this.jpeg";
+  String get gif => "gif/$this.gif";
   String get svg => "icons/$this.svg";
 }
 

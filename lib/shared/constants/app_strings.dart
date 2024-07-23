@@ -27,7 +27,15 @@ class AppStrings {
   final String codeLogo = "codeLogo";
   final String verticalLines = "verticalLines";
   final String backDrop = "backdrop";
+  final String backDrop2 = "bgPattern";
   final String footerImage = "footerImage";
+  final String edit = "edit";
+
+  //!
+  //!
+  //! IMAGES
+  final String productImage = "productImage";
+  final String myAvatar = "myAvatar";
 
   //!
   //!
@@ -50,4 +58,5 @@ class AppStrings {
 
   //! AUTH
   String login = "Login 🙈";
+  String logout = "Logout 😭";
 }

@@ -1,5 +1,4 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,15 +7,17 @@ import 'package:serti0x_blog_editor/services/repository/auth_repository/auth_rep
 import 'package:serti0x_blog_editor/router/routes.dart';
 import 'package:serti0x_blog_editor/screens/widgets/app_button.dart';
 import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
+import 'package:serti0x_blog_editor/shared/constants/app_strings.dart';
 import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
 class ArticlesDrawer extends ConsumerWidget {
   const ArticlesDrawer({super.key});
 
+  static const coloursInstance = AppColours.instance;
+  static final appStrings = AppStrings.instance;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const coloursInstance = AppColours.instance;
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 12.0),
       child: Column(
@@ -29,14 +30,12 @@ class ArticlesDrawer extends ConsumerWidget {
             decoration: BoxDecoration(
               color: coloursInstance.blue.withOpacity(0.1),
               shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage(
+                  appStrings.myAvatar.png,
+                ),
+              ),
             ),
-            child: "A.S"
-                .txt16(
-                  context: context,
-                  fontWeight: FontWeight.w700,
-                  color: coloursInstance.blue,
-                )
-                .alignCenter(),
           ),
 
           45.0.sizedBoxHeight,
@@ -52,7 +51,11 @@ class ArticlesDrawer extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
               ),
+
+              //!
               10.0.sizedBoxWidth,
+
+              //!
               Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
@@ -60,7 +63,7 @@ class ArticlesDrawer extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: SvgPicture.asset(
-                  "edit".svg,
+                  appStrings.edit.svg,
                   color: coloursInstance.grey900,
                   width: 18.0,
                   height: 18.0,
@@ -81,7 +84,7 @@ class ArticlesDrawer extends ConsumerWidget {
               navigator.replace(routeNames.landingPage);
               ref.read(userProvider.notifier).update((state) => null);
             },
-            buttonText: "Logout",
+            buttonText: appStrings.logout,
             isLoading: false,
             isButtonColoured: true,
           ),

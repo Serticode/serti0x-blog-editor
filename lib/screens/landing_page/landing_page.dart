@@ -22,58 +22,49 @@ class LandingPage extends ConsumerWidget {
       ),
 
       //!
-      body: Stack(
-        children: [
-          //!
-          SvgPicture.asset(
-            appStrings.verticalLines.svg,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
-
-          //!
-          SvgPicture.asset(
-            appStrings.backDrop.svg,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
-
-          //!
-          Column(
+      body: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(
+          scrollbars: false,
+        ),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Stack(
             children: [
-              12.0.sizedBoxHeight,
-
               //!
-              appStrings.theFuture
-                  .txt(
-                    context: context,
-                    fontSize: 52,
-                  )
-                  .fadeInFromBottom(
-                    delay: const Duration(milliseconds: 400),
-                  ),
+              SvgPicture.asset(
+                appStrings.backDrop.svg,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+              ),
 
-              12.0.sizedBoxHeight,
+              Column(
+                children: [
+                  12.0.sizedBoxHeight,
 
-              //!
-              appStrings.theFutureRider
-                  .txt16(
-                    context: context,
-                  )
-                  .fadeInFromBottom(
-                    delay: const Duration(milliseconds: 500),
-                  ),
+                  //!
+                  appStrings.theFuture
+                      .txt(
+                        context: context,
+                        fontSize: 52,
+                      )
+                      .fadeInFromBottom(
+                        delay: const Duration(milliseconds: 400),
+                      ),
 
-              20.0.sizedBoxHeight,
+                  12.0.sizedBoxHeight,
 
-              Expanded(
-                child: Material(
-                  elevation: 40.0,
-                  shadowColor: appColours.grey200.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(
-                    32,
-                  ),
-                  child: Container(
+                  //!
+                  appStrings.theFutureRider
+                      .txt16(
+                        context: context,
+                      )
+                      .fadeInFromBottom(
+                        delay: const Duration(milliseconds: 500),
+                      ),
+
+                  20.0.sizedBoxHeight,
+
+                  Container(
                     width: double.infinity,
                     padding: const EdgeInsets.only(
                       top: 18,
@@ -81,33 +72,37 @@ class LandingPage extends ConsumerWidget {
                       right: 21,
                     ),
                     decoration: BoxDecoration(
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(
                         32,
                       ),
                     ),
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context).copyWith(
-                        scrollbars: false,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            6.0.sizedBoxHeight,
-                            Image.asset(
-                              "productImage".png,
-                            ),
-                          ],
-                        ).alignBottomCenter(),
-                      ),
-                    ),
-                  ),
-                ).generalPadding,
-              ),
 
-              const Footer()
+                    //!
+                    child: Stack(
+                      children: [
+                        //!
+                        SvgPicture.asset(
+                          fit: BoxFit.cover,
+                          appStrings.backDrop2.svg,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                        ),
+
+                        //!
+                        Image.asset(
+                          appStrings.productImage.png,
+                        ).generalPadding,
+                      ],
+                    ).alignBottomCenter(),
+                  ),
+
+                  const Footer(),
+                ],
+              ).alignCenter(),
             ],
-          ).alignCenter(),
-        ],
+          ),
+        ),
       ),
     );
   }
