@@ -1,4 +1,4 @@
-const host = "localhost:5555";
+const host = "http://localhost:5555";
 
 class NetworkConstants {
   NetworkConstants._internal();
@@ -10,20 +10,19 @@ class NetworkConstants {
   }
 
   //! AUTH
-  final String login = "http://localhost:5555/api/v1/auth/login";
-  final String getUser = "http://localhost:5555/api/v1/auth/getUser/";
-  final String logout = "http://localhost:5555/api/v1/auth/logout/";
+  final String login = "$host/api/v1/auth/login";
+  final String getUser = "$host/api/v1/auth/getUser/";
+  final String logout = "$host/api/v1/auth/logout/";
 
   //! ARTICLES
-  final String createArticle = "http://localhost:5555/api/v1/articles/";
-  final String updateArticleTitle =
-      "http://localhost:5555/api/v1/articles/updateArticleTitle/";
+  final String createArticle = "$host/api/v1/articles/";
+  final String updateArticleTitle = "$host/api/v1/articles/updateArticleTitle/";
   final String updateArticleMediumURL =
-      "http://localhost:5555/api/v1/articles/updateArticleMediumURL/";
+      "$host/api/v1/articles/updateArticleMediumURL/";
   final String updateArticleCategory =
-      "http://localhost:5555/api/v1/articles/updateArticleCategory/";
+      "$host/api/v1/articles/updateArticleCategory/";
   String getArticles({
     required String userID,
   }) =>
-      "http://localhost:5555/api/v1/articles/$userID/getArticles/";
+      "$host/api/v1/articles/$userID/getArticles/";
 }

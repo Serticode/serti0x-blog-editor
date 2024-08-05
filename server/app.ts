@@ -8,6 +8,8 @@ import * as swaggerUI from "swagger-ui-express";
 import { connectToDatabase } from "./database/db_connect";
 import { errorHandlerMiddleware } from "./middleware/error_handler";
 import { RegisterRoutes } from "./routes/routes";
+import { ListenToSocketParams } from "./services/models/sockets_models";
+import SocketsService from "./services/sockets/sockets_service";
 import * as swaggerJson from "./tsoa/tsoa.json";
 
 //! DOT ENV
@@ -41,7 +43,7 @@ RegisterRoutes(app);
 //! ERROR HANDLER
 app.use(errorHandlerMiddleware);
 
-const PORT = process.env.PORT || process.env.BACKUP_PORT;
+const port = process.env.PORT || process.env.BACKUP_PORT;
 
 const start = async () => {
   try {
@@ -56,29 +58,20 @@ const start = async () => {
 
     console.log(`Connected to database \nStarting server...`);
 
-    const server = createServer(
-      app.listen(PORT, () => {
-        console.log("Server is running on port", PORT);
-      })
-    );
+    const server = createServer(app);
 
-    const io = new SocketIOServer(server);
+    const socketIO = new SocketIOServer(server);
 
-    io.on("connection", (socket) => {
-      socket.on("join", (documentId) => {
-        socket.join(documentId);
-      });
+    const params = {
+      socketIO: socketIO,
+      socketName: "articleSocket",
+    } as ListenToSocketParams;
 
-      socket.on("typing", (data) => {
-        socket.broadcast.to(data.room).emit("changes", data);
-      });
+    new SocketsService().listenToSocket(params);
 
-      socket.on("save", async (data) => {
-        console.log("SOCKET IO SAVE DATA: ", data);
-      });
+    server.listen(port, () => {
+      console.log("Server is running on port", port);
     });
-
-    server.listen();
   } catch (error) {
     console.log(error);
   }

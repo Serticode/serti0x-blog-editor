@@ -1,14 +1,17 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:serti0x_blog_editor/services/models/data_or_error_model.dart';
-import 'package:serti0x_blog_editor/services/repository/sockets_repository/sockets_repository.dart';
-import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
+import "dart:async";
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_quill/flutter_quill.dart" as quill;
+import "package:serti0x_blog_editor/services/article_state/article_state.dart";
+import "package:serti0x_blog_editor/services/models/data_or_error_model.dart";
+import "package:serti0x_blog_editor/services/repository/sockets_repository/sockets_repository.dart";
+import "package:serti0x_blog_editor/shared/constants/app_colours.dart";
+import "package:serti0x_blog_editor/shared/utils/app_extensions.dart";
 
 class ArticleEditor extends ConsumerStatefulWidget {
-  const ArticleEditor({super.key});
+  const ArticleEditor({
+    super.key,
+  });
 
   @override
   ConsumerState<ArticleEditor> createState() => _ArticleEditorState();
@@ -17,7 +20,7 @@ class ArticleEditor extends ConsumerStatefulWidget {
 class _ArticleEditorState extends ConsumerState<ArticleEditor> {
   final quill.QuillController _controller = quill.QuillController.basic();
   DataOrErrorModel? dataOrErrorModel;
-  SocketRepository socketRepository = SocketRepository();
+  final SocketRepository _socketRepository = SocketRepository();
 
   void fetchDocumentData() async {
     /* errorModel = await ref.read(documentRepositoryProvider).getDocumentById(
@@ -41,8 +44,8 @@ class _ArticleEditorState extends ConsumerState<ArticleEditor> {
     _controller!.document.changes.listen((event) {
       if (event.item3 == quill.ChangeSource.LOCAL) {
         Map<String, dynamic> map = {
-          'delta': event.item2,
-          'room': widget.id,
+          "delta": event.item2,
+          "room": widget.id,
         };
         socketRepository.typing(map);
       }
@@ -52,24 +55,22 @@ class _ArticleEditorState extends ConsumerState<ArticleEditor> {
   @override
   void initState() {
     super.initState();
-    socketRepository.joinDocumentRoom(documentId: "");
+
     fetchDocumentData();
 
-    socketRepository.changeListener(
-      callBack: (data) {
-        /* _controller?.compose(
-        quill Delta.fromJson(data['delta']),
-        _controller?.selection ?? const TextSelection.collapsed(offset: 0),
-        quill.ChangeSource.REMOTE,
-      ); */
-      },
-    );
+    _socketRepository.onArticleEmit();
 
-    Timer.periodic(const Duration(seconds: 2), (timer) {
-      /* socketRepository.autoSave(data: <String, dynamic>{
-        'delta': _controller!.document.toDelta(),
-        'room': "",
-      }); */
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      "EMITTING CONTENT TIMER ---->> ${timer.tick}".log();
+
+      final articleID = ref.watch(articleInStateProvider).articleID;
+
+      if (articleID != null && articleID.isNotEmpty) {
+        _socketRepository.autoSave(data: <String, dynamic>{
+          "delta": _controller.document.toDelta(),
+          "room": articleID,
+        });
+      }
     });
   }
 

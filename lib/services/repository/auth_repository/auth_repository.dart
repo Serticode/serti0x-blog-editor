@@ -5,6 +5,7 @@ import "package:http/http.dart";
 import "package:serti0x_blog_editor/services/models/data_or_error_model.dart";
 import "package:serti0x_blog_editor/services/models/user_model.dart";
 import "package:serti0x_blog_editor/services/repository/preferences_repository/shared_preferences_repository.dart";
+import "package:serti0x_blog_editor/services/repository/sockets_repository/sockets_client.dart";
 import "package:serti0x_blog_editor/shared/env_constants.dart";
 import "package:serti0x_blog_editor/shared/network_constants.dart";
 import "package:serti0x_blog_editor/shared/utils/app_extensions.dart";
@@ -127,6 +128,9 @@ class AuthRepository {
       String? token = await _sharedPrefRepo.getToken();
 
       if (token != null) {
+        final socketClient = SocketClient.instance.socket!;
+        socketClient.disconnect();
+
         var response = await _client.delete(
           Uri.parse(_networkConstants.logout),
           headers: {
