@@ -1,3 +1,5 @@
+import ArticlesService from "../../services/articles/articles_service";
+import { SaveArticleContentCategoryParams } from "../../services/models/article_model";
 import { ListenToSocketParams } from "../../services/models/sockets_models";
 
 export default class SocketsService {
@@ -15,8 +17,13 @@ export default class SocketsService {
         console.log("DISCONNECT DONE ---->> ", socket.id);
       });
 
-      socket.on("save", (data) => {
-        console.log("SOCKET IO SAVE DATA: ", data);
+      socket.on("save", async (data) => {
+        const params = {
+          articleID: data.articleID,
+          content: data.delta,
+        } as SaveArticleContentCategoryParams;
+
+        await new ArticlesService().saveArticleData(params);
       });
     });
 

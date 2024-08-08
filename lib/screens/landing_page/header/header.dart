@@ -76,7 +76,7 @@ class Header extends ConsumerWidget {
                     .read(userProvider.notifier)
                     .update((state) => dataOrErrorModel.data);
 
-                navigator.replace(routeNames.article);
+                navigator.replace(routeNames.articles);
               } else {
                 scaffoldMessenger.showSnackBar(
                   SnackBar(

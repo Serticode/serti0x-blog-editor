@@ -7,6 +7,7 @@ class RouteNames {
     return _instance!;
   }
 
-  final String article = "/article";
+  final String articles = "/articles";
+  final String editArticle = "/editArticle";
   final String landingPage = "/";
 }

@@ -259,6 +259,46 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"GetArticleByIDResponseParams": {
+				"properties": {
+					"article": {
+						"$ref": "#/components/schemas/Article"
+					}
+				},
+				"required": [
+					"article"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteArticleResponseParam": {
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteArticleParam": {
+				"properties": {
+					"userID": {
+						"type": "string"
+					},
+					"articleID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"userID",
+					"articleID"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -585,6 +625,80 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/UpdateArticleCategoryParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/articles/{articleID}/getArticle": {
+			"get": {
+				"operationId": "getArticleByID",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetArticleByIDResponseParams"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "You have a bad request, kindly check your path or API request section"
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "articleID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/articles/deleteArticle": {
+			"delete": {
+				"operationId": "deleteArticle",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/DeleteArticleResponseParam"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Articles"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DeleteArticleParam"
 							}
 						}
 					}

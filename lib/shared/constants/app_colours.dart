@@ -8,6 +8,7 @@ class AppColours {
   final Color blue = const Color(0xFF1C77FF);
   final Color purple = const Color(0xFF6420AA);
   final Color peach = const Color(0xFFFF6464);
+  final Color red = const Color.fromARGB(255, 236, 13, 13);
   final Color black = const Color(0XFF171717);
   final Color white = const Color(0xFFFFFFFF);
 

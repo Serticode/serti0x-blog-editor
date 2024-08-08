@@ -57,8 +57,8 @@ class DocumentRepository {
 
       switch (response.statusCode) {
         case 200:
-          final jsonResponse = jsonDecode(response.body);
-          "200: JSON RESPONSE - CREATE ARTICLES: $response".log();
+          final jsonResponse = await jsonDecode(response.body);
+          "200: JSON RESPONSE - CREATE ARTICLES: $jsonResponse".log();
 
           error = DataOrErrorModel(
             error: null,
@@ -204,9 +204,8 @@ class DocumentRepository {
 
       switch (response.statusCode) {
         case 200:
-          final dataOrError = await getDocumentById(
-            token: token ?? "",
-            documentID: articleID,
+          final dataOrError = await getArticleByID(
+            articleID: articleID,
           );
 
           await _repoRef
@@ -214,8 +213,6 @@ class DocumentRepository {
               .refreshArticleRepoProvider();
 
           if (dataOrError.data != null) {
-            "DATA: ${dataOrError.data}".log();
-
             _repoRef.read(articleInStateProvider.notifier).updateArticleInState(
                   theArticle: dataOrError.data as ArticleModel,
                 );
@@ -233,41 +230,88 @@ class DocumentRepository {
   }
 
   //!
-  Future<DataOrErrorModel> getDocumentById({
-    required String token,
-    required String documentID,
+  Future<DataOrErrorModel> getArticleByID({
+    required String articleID,
   }) async {
-    DataOrErrorModel error = DataOrErrorModel(
+    DataOrErrorModel errorOrData = DataOrErrorModel(
       error: "Some unexpected error occurred.",
       data: null,
     );
+
     try {
+      String? token = await _sharedPrefRepo.getToken();
+
       final response = await _client.get(
-        Uri.parse("$host/doc/$documentID"),
+        Uri.parse(
+          _networkConstants.getArticleByID(
+            articleID: articleID,
+          ),
+        ),
         headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          "x-auth-token": token,
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
         },
       );
 
       switch (response.statusCode) {
         case 200:
-          final jsonResponse = jsonDecode(response.body);
+          final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
 
-          error = DataOrErrorModel(
+          return errorOrData = DataOrErrorModel(
             error: null,
             data: ArticleModel.fromJSON(json: jsonResponse),
           );
-          break;
         default:
           throw "This Document does not exist, please create a new one.";
       }
     } catch (e) {
-      error = DataOrErrorModel(
+      errorOrData = DataOrErrorModel(
         error: e.toString(),
         data: null,
       );
     }
-    return error;
+    return errorOrData;
+  }
+
+  //!
+  Future<DataOrErrorModel> deleteArticle({
+    required String articleID,
+  }) async {
+    DataOrErrorModel dataOrError = DataOrErrorModel(
+      error: "Some unexpected error occurred.",
+      data: null,
+    );
+
+    try {
+      String? token = await _sharedPrefRepo.getToken();
+      String userID = _repoRef.read(userProvider)?.userID ?? "";
+
+      final response = await _client.delete(
+        Uri.parse(_networkConstants.deleteArticle),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({"userID": userID, "articleID": articleID}),
+      );
+
+      switch (response.statusCode) {
+        case 200:
+          final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+
+          return dataOrError = DataOrErrorModel(
+            error: null,
+            data: jsonResponse["message"],
+          );
+
+        default:
+          return dataOrError;
+      }
+    } catch (error) {
+      return dataOrError = DataOrErrorModel(
+        error: error.toString(),
+        data: null,
+      );
+    }
   }
 }

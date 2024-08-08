@@ -17,6 +17,7 @@ class SocketClient {
     socket!.connect();
 
     socket!.on("connection", (data) {
+      // ignore: avoid_dynamic_calls
       "Connected to WebSocket: DATA --->> ${data.id}".log();
     });
 

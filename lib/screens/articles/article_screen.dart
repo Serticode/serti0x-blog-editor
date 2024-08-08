@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:serti0x_blog_editor/screens/articles/widgets/articles_view.dart';
+import 'package:serti0x_blog_editor/screens/articles/widgets/articles_grid_view.dart';
 import 'package:serti0x_blog_editor/screens/articles/widgets/drawer.dart';
-import 'package:serti0x_blog_editor/screens/articles/widgets/edit_article_view.dart';
 
 class ArticleScreen extends ConsumerWidget {
   const ArticleScreen({super.key});
@@ -18,15 +17,8 @@ class ArticleScreen extends ConsumerWidget {
           ),
 
           //! ARTICLES
-          SizedBox(
-            width: 300,
-            child: ArticlesView(),
-          ),
-
-          //! EDIT DOCUMENTS
           Expanded(
-            flex: 7,
-            child: EditArticleView(),
+            child: ArticlesGridView(),
           ),
         ],
       ),

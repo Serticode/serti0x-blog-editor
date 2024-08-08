@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:serti0x_blog_editor/services/models/article_model.dart';
 import 'package:serti0x_blog_editor/services/repository/article_repository/article_repository.dart';
-import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 
 final articleInStateProvider =
     StateNotifierProvider<ArticleInState, ArticleModel>((ref) {
@@ -54,9 +53,7 @@ class ArticleInState extends StateNotifier<ArticleModel> {
 
     _stateRef.invalidate(articlesRepositoryProvider);
 
-    await Future.delayed(const Duration(seconds: 5)).then((value) {
-      "FUTURE.DELAYED DONE".log();
-    });
+    await Future.delayed(const Duration(seconds: 3));
 
     updateArticleInState(theArticle: updatedArticle);
   }
@@ -79,9 +76,7 @@ class ArticleInState extends StateNotifier<ArticleModel> {
 
     _stateRef.invalidate(articlesRepositoryProvider);
 
-    await Future.delayed(const Duration(seconds: 5)).then((value) {
-      "FUTURE.DELAYED DONE".log();
-    });
+    await Future.delayed(const Duration(seconds: 3));
 
     updateArticleInState(theArticle: updatedArticle);
   }

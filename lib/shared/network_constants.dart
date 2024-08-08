@@ -25,4 +25,10 @@ class NetworkConstants {
     required String userID,
   }) =>
       "$host/api/v1/articles/$userID/getArticles/";
+
+  String getArticleByID({
+    required String articleID,
+  }) =>
+      "$host/api/v1/articles/$articleID/getArticle/";
+  final String deleteArticle = "$host/api/v1/articles/deleteArticle";
 }

@@ -1,25 +1,32 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:serti0x_blog_editor/screens/articles/widgets/article_delete_button.dart';
+import 'package:serti0x_blog_editor/services/article_state/is_deleting_article_state.dart';
 import 'package:serti0x_blog_editor/services/models/article_model.dart';
 import 'package:serti0x_blog_editor/services/article_state/article_state.dart';
 import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
 import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 import 'package:serti0x_blog_editor/shared/utils/utils.dart';
+import "package:flutter_quill/flutter_quill.dart" as quill;
 
 class ArticleCard extends ConsumerWidget {
   const ArticleCard({
     required this.article,
+    required this.onTap,
     super.key,
   });
   final ArticleModel article;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const coloursInstance = AppColours.instance;
     final bool isCurrentArticle = ref.watch(articleInStateProvider) == article;
+    final articleContent = (article.content != null && article.content!.isEmpty)
+        ? "You have not written anything. Write something new?"
+        : quill.Document.fromJson(article.content!).toPlainText();
 
     return Container(
       height: 250,
@@ -53,7 +60,7 @@ class ArticleCard extends ConsumerWidget {
               )
               .alignCenterLeft(),
 
-          10.0.sizedBoxHeight,
+          32.0.sizedBoxHeight,
 
           //!
           Divider(
@@ -62,20 +69,19 @@ class ArticleCard extends ConsumerWidget {
             color: coloursInstance.grey200,
           ),
 
-          10.0.sizedBoxHeight,
+          32.0.sizedBoxHeight,
 
           //!
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu scelerisque felis imperdiet proin fermentum leo vel orci. Est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat."
-              .txt12(
-            context: context,
-            maxLines: 5,
-            color: coloursInstance.grey500,
-            textAlign: TextAlign.justify,
-            fontWeight: FontWeight.w400,
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: articleContent.txt12(
+              context: context,
+              maxLines: 5,
+              color: coloursInstance.grey500,
+              textAlign: TextAlign.justify,
+              fontWeight: FontWeight.w400,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-
-          10.0.sizedBoxHeight,
 
           //!
           Container(
@@ -90,7 +96,7 @@ class ArticleCard extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  "bubble".svg,
+                  appStrings.bubble.svg,
                   width: 16.0,
                   height: 16.0,
                   color: AppUtils.getArticleCategoryColour(
@@ -114,19 +120,32 @@ class ArticleCard extends ConsumerWidget {
             ),
           ),
 
-          10.0.sizedBoxHeight,
+          32.0.sizedBoxHeight,
 
           //!
-          //!
-          AppUtils.formatDateTime(theDate: article.createdAt!)
-              .txt(
-                context: context,
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-              )
-              .alignCenterLeft(),
+          Row(
+            children: [
+              AppUtils.formatDateTime(theDate: article.createdAt!)
+                  .txt(
+                    context: context,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w400,
+                  )
+                  .alignCenterLeft(),
+              const Spacer(),
+
+              //!
+              ArticleDeleteButton(
+                articleID: article.articleID ?? "",
+              ).transformToScale(scale: 0.7)
+            ],
+          ),
         ],
       ),
-    );
+    )
+        .onTap(
+          onTap: onTap,
+        )
+        .ignorePointer(isLoading: ref.watch(isDeletingArticle));
   }
 }

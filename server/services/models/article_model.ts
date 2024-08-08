@@ -69,3 +69,31 @@ export interface UpdateArticleCategoryParams {
 export interface UpdateArticleCategoryResponse {
   article: Article;
 }
+
+//!
+//! SAVE ARTICLE CONTENT CATEGORY
+export interface SaveArticleContentCategoryParams {
+  content: any[];
+  articleID: string;
+}
+
+//!
+//! GET ARTICLE BY ID PARAMS
+export interface GetArticleByIDParams {
+  articleID: string;
+}
+
+export interface GetArticleByIDResponseParams {
+  article: Article;
+}
+
+//! DELETE ARTICLE PARAMS
+export interface DeleteArticleParam {
+  userID: string;
+  articleID: string;
+}
+
+//! DELETE ARTICLE RESPONSE PARAMS
+export interface DeleteArticleResponseParam {
+  message: string;
+}

@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import {
   Body,
   Controller,
+  Delete,
   Get,
   OperationId,
   Path,
@@ -15,6 +16,9 @@ import ArticlesService from "../../services/articles/articles_service";
 import {
   Article,
   CreateArticleParams,
+  DeleteArticleParam,
+  DeleteArticleResponseParam,
+  GetArticleByIDResponseParams,
   GetMyArticlesParamsResponse,
   UpdateArticleCategoryParams,
   UpdateArticleCategoryResponse,
@@ -96,5 +100,33 @@ export class ArticlesController extends Controller {
       categoryName: body.categoryName,
       articleID: body.articleID,
     });
+  }
+
+  @Get("/{articleID}/getArticle")
+  @OperationId("getArticleByID")
+  @Security("jwt")
+  @Response(StatusCodes.OK)
+  @Response(
+    StatusCodes.BAD_REQUEST,
+    "You have a bad request, kindly check your path or API request section"
+  )
+  public async getArticleByID(
+    @Path() articleID: string
+  ): Promise<GetArticleByIDResponseParams> {
+    const params = {
+      articleID: articleID,
+    };
+
+    return new ArticlesService().getArticleByID(params);
+  }
+
+  //! LOGOUT END POINT
+  @Delete("/deleteArticle")
+  @Security("jwt")
+  @OperationId("deleteArticle")
+  public async deleteArticle(
+    @Body() body: DeleteArticleParam
+  ): Promise<DeleteArticleResponseParam> {
+    return await new ArticlesService().deleteArticle(body);
   }
 }

@@ -8,29 +8,25 @@ import 'package:serti0x_blog_editor/screens/widgets/app_button.dart';
 import 'package:serti0x_blog_editor/services/article_state/article_state.dart';
 import 'package:serti0x_blog_editor/services/controller/article_controller.dart';
 import 'package:serti0x_blog_editor/services/models/article_model.dart';
-import 'package:serti0x_blog_editor/services/repository/article_repository/article_repository.dart';
 import 'package:serti0x_blog_editor/shared/constants/app_colours.dart';
 import 'package:serti0x_blog_editor/shared/utils/app_extensions.dart';
 import 'package:serti0x_blog_editor/shared/utils/utils.dart';
 
 class ArticleEditorHeader extends ConsumerWidget {
-  const ArticleEditorHeader({super.key});
+  const ArticleEditorHeader({
+    required this.theArticle,
+    required this.onBackArrowTapped,
+    super.key,
+  });
+
+  final ArticleModel? theArticle;
+  final VoidCallback onBackArrowTapped;
 
   static final ValueNotifier<bool> showCategoryDropdown = false.toValueNotifier;
 
   static const coloursInstance = AppColours.instance;
 
   static final articleCategoryDropdownController = DropdownController();
-
-  void updateArticleTitle({
-    required WidgetRef ref,
-  }) {
-    ref.read(articlesRepositoryProvider).updateTitle(
-          articleID: ref.read(articleInStateProvider).articleID!,
-          title:
-              ref.read(articleControllerProvider).theTitleController.value.text,
-        );
-  }
 
   static List<CoolDropdownItem<String>> dropdownItemList =
       ArticleCategory.values
@@ -47,7 +43,6 @@ class ArticleEditorHeader extends ConsumerWidget {
     final currentArticle = ref.watch(articleInStateProvider);
     final titleController =
         ref.watch(articleControllerProvider).theTitleController;
-    ref.watch(articleControllerProvider).listenToTitleChange();
 
     return Container(
       height: 120.0,
@@ -128,6 +123,8 @@ class ArticleEditorHeader extends ConsumerWidget {
                 ),
               ),
 
+              const Spacer(),
+
               //!
               RegularButton(
                 onTap: () {
@@ -156,8 +153,17 @@ class ArticleEditorHeader extends ConsumerWidget {
 
           //!
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Icon(
+                Icons.arrow_back_ios,
+                size: 12.0,
+                color: AppColours.instance.grey900,
+              ).onTap(
+                onTap: () => onBackArrowTapped(),
+              ),
+
+              21.0.sizedBoxWidth,
+
               SizedBox(
                 height: 40.0,
                 width: 120.0,
@@ -244,27 +250,13 @@ class ArticleEditorHeader extends ConsumerWidget {
                 ),
               ),
 
-              12.0.sizedBoxHeight,
-
-              21.0.sizedBoxWidth,
+              const Spacer(),
 
               //!
               AppUtils.formatDateTime(theDate: currentArticle.createdAt!).txt(
                 context: context,
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
-              ),
-
-              21.0.sizedBoxWidth,
-
-              //!
-              "@Serticode".txt14(
-                context: context,
-                overflow: TextOverflow.ellipsis,
-                fontWeight: FontWeight.w600,
-                color: AppUtils.getArticleCategoryColour(
-                  articleCategoryName: currentArticle.category ?? "",
-                ),
               ),
             ],
           ),

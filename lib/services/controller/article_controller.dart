@@ -28,15 +28,15 @@ class ArticleController {
 
   //! LISTEN TO TITLE CHANGES
   void listenToTitleChange() =>
-      _controllerRef.listen<ArticleModel>(articleInStateProvider,
+      _controllerRef.listen<ArticleModel?>(articleInStateProvider,
           (previousArticle, newArticle) {
-        if (newArticle.title != theTitleController.text) {
+        if (newArticle != null && newArticle.title != theTitleController.text) {
           theTitleController.text = newArticle.title!;
         }
       });
 
   //!
-  Future<void> createDocument({
+  Future createNewArticle({
     required BuildContext context,
   }) async {
     const coloursInstance = AppColours.instance;
@@ -53,13 +53,11 @@ class ArticleController {
 
       await Future.delayed(const Duration(seconds: 5));
 
-      final newArticle = ArticleModel.fromJSON(
-        json: dataOrError.data,
-      );
-
       _controllerRef
           .read(articleInStateProvider.notifier)
-          .updateArticleInState(theArticle: newArticle);
+          .updateArticleInState(theArticle: dataOrError.data);
+
+      return dataOrError.data;
     } else {
       snackbar.showSnackBar(
         SnackBar(
@@ -70,6 +68,8 @@ class ArticleController {
           ),
         ),
       );
+
+      return null;
     }
   }
 
@@ -84,14 +84,20 @@ class ArticleController {
         );
   }
 
+  Future<void> setControllerTitle({
+    required String title,
+  }) async =>
+      theTitleController.value = TextEditingValue(text: title);
+
   //! UPDATE CATEGORY
   Future<void> updateArticleCategory({
     required String categoryName,
     required String articleID,
-  }) async {
-    await _controllerRef.read(articlesRepositoryProvider).updateArticleCategory(
-          articleID: articleID,
-          categoryName: categoryName,
-        );
-  }
+  }) async =>
+      await _controllerRef
+          .read(articlesRepositoryProvider)
+          .updateArticleCategory(
+            articleID: articleID,
+            categoryName: categoryName,
+          );
 }

@@ -2,8 +2,13 @@ import Article from "../../database/models/articles/articles_model";
 import { ArticleNotFoundError } from "../../errors/article_not_found";
 import {
   CreateArticleParams,
+  DeleteArticleParam,
+  DeleteArticleResponseParam,
+  GetArticleByIDParams,
+  GetArticleByIDResponseParams,
   GetMyArticlesParams,
   GetMyArticlesParamsResponse,
+  SaveArticleContentCategoryParams,
   Article as TSOAArticleModel,
   UpdateArticleCategoryParams,
   UpdateArticleCategoryResponse,
@@ -14,12 +19,9 @@ import {
 } from "../../services/models/article_model";
 
 export default class ArticlesService {
-  //!
-  //! CREATE ARTICLE
   public async createArticle(
     params: CreateArticleParams
   ): Promise<TSOAArticleModel> {
-    //! GET USER DETAILS FROM PARAMS AND FIND USER IN DB.
     const { userID, title, category, mediumURL } = params;
 
     let article = await Article.create({
@@ -34,8 +36,6 @@ export default class ArticlesService {
     return article.toJSON() as TSOAArticleModel;
   }
 
-  //!
-  //! GET MY ARTICLES
   public async getMyArticles(
     params: GetMyArticlesParams
   ): Promise<GetMyArticlesParamsResponse> {
@@ -60,7 +60,6 @@ export default class ArticlesService {
     }
   }
 
-  //! UPDATE ARTICLE TITLE
   public async updateArticleTitle(
     params: UpdateArticleTitleParams
   ): Promise<UpdateArticleTitleParamsResponse> {
@@ -77,7 +76,6 @@ export default class ArticlesService {
     }
   }
 
-  //! UPDATE ARTICLE MEDIUM URL
   public async updateArticleMediumURL(
     params: UpdateArticleMediumURLParams
   ): Promise<UpdateArticleMediumURLResponse> {
@@ -108,5 +106,54 @@ export default class ArticlesService {
     } else {
       return article.toJSON();
     }
+  }
+
+  public async saveArticleData(params: SaveArticleContentCategoryParams) {
+    const { articleID, content } = params;
+
+    const article = await Article.findByIdAndUpdate(articleID, {
+      content: content,
+    });
+
+    if (!article) {
+      throw new ArticleNotFoundError();
+    } else {
+      return article.toJSON();
+    }
+  }
+
+  public async getArticleByID(
+    params: GetArticleByIDParams
+  ): Promise<GetArticleByIDResponseParams> {
+    const { articleID } = params;
+
+    const article = await Article.findById(articleID);
+
+    if (!article) {
+      throw new ArticleNotFoundError();
+    } else {
+      return article.toJSON();
+    }
+  }
+
+  public async deleteArticle(
+    params: DeleteArticleParam
+  ): Promise<DeleteArticleResponseParam> {
+    const { userID, articleID } = params;
+
+    const article = await Article.findOneAndDelete({
+      _id: articleID,
+      userId: userID,
+    });
+
+    if (!article) {
+      throw new ArticleNotFoundError();
+    }
+
+    const response = {
+      message: "Article deleted successfully",
+    } as DeleteArticleResponseParam;
+
+    return response;
   }
 }

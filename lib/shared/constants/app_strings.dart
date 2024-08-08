@@ -9,7 +9,7 @@ class AppStrings {
   }
 
   //! FOR THE DEV
-  final String appName = "Serti0x Blog.";
+  final String appName = "Blog.";
   final String developerName = "Serticode.";
   final String githubURL = "https://github.com/Serticode";
 
@@ -30,6 +30,10 @@ class AppStrings {
   final String backDrop2 = "bgPattern";
   final String footerImage = "footerImage";
   final String edit = "edit";
+  final String clearArticleInState = "clearArticleInState";
+  final String logoutIcon = "logoutIcon";
+  final String trash = "trash";
+  final String bubble = "bubble";
 
   //!
   //!
@@ -49,6 +53,7 @@ class AppStrings {
       "Work together in real time, organize information and create a learning note from your experience.";
   final String contactMe = "Contact Me 🙈.";
   final String preview = "Preview";
+  final String articleID = "articleID";
 
   //! SOCKET REPO STRINGS
   String join = "join";

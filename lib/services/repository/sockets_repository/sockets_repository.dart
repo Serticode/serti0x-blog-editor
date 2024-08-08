@@ -15,11 +15,11 @@ class SocketRepository {
     _socketClient.emit(_appStringsInstance.join, documentId);
   }
 
-  void onArticleEmit() {
+  /* void onArticleEmit() {
     _socketClient.on("connectionSuccessful", (data) {
       "Connection Successful: --->> Message Gotten: DATA --->> $data".log();
     });
-  }
+  } */
 
   void typing({
     required Map<String, dynamic> data,
